@@ -7,7 +7,7 @@ SeaUrchinScore Analyzer for node
 ```
 const analyzer = require('sus-analyzer')
 
-const sus_meta = analyzer(fs.readFileSync("example.sus", 'utf8')
+const sus_meta = analyzer(fs.readFileSync("example.sus", 'utf8'))
 console.log(sus_meta)
 ```
 
