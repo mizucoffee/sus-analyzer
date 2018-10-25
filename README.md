@@ -1,2 +1,2 @@
-# sus-analyze
+# sus-analyzer
 SeaUrchinScore Analyzer for node
