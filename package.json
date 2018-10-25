@@ -10,7 +10,7 @@
   "scripts": {
     "test": "ava -v"
   },
-  "dependencies": {
+  "devDependencies": {
     "ava": "^0.25.0"
   }
 }
