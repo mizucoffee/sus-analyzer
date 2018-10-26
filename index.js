@@ -14,9 +14,21 @@ const support_meta = [
   "BASEBPM"
 ]
 
-function analyze(sus){
+const required_meta = [
+  "SONGID",
+  "TITLE",
+  "ARTIST",
+  "DESIGNER",
+  "DIFFICULTY",
+  "PLAYLEVEL",
+  "WAVE",
+  "WAVEOFFSET",
+  "BASEBPM"
+]
+
+function susToArray(sus) {
   if(!sus) throw new Error("Argument required");
-  const meta = sus.split('\n')
+   return sus.split('\n')
     .filter(line => line)
     .filter(line => line.slice(0,1) === "#")
     .map(line => line.slice(1))
@@ -63,11 +75,20 @@ function analyze(sus){
       }
       return line
     })
-
-  const metaObj = {}
-  meta.forEach(line => metaObj[line[0]] = line[1])
-
-  return metaObj
 }
 
-module.exports = analyze;
+module.exports = {
+  getMeta: sus => {
+    const metaObj = {}
+    susToArray(sus).forEach(line => metaObj[line[0]] = line[1])
+    return metaObj
+  },
+  validate: sus => {
+    const returnObj = {}
+    const array = susToArray(sus).map(line => line[0])
+    let missing_meta = required_meta.filter(line => array.indexOf(line) === -1)
+    returnObj.VALIDITY = missing_meta.length === 0
+    returnObj.MISSING_META = missing_meta
+    return returnObj
+  }
+}

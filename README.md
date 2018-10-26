@@ -5,9 +5,14 @@ SeaUrchinScore Analyzer for node
 ## How to use
 
 ```
-const analyzer = require('sus-analyzer')
+const SusAnalyzer = require('sus-analyzer'),
+  fs = require('fs')
 
-const sus_meta = analyzer(fs.readFileSync("example.sus", 'utf8'))
+const sus = fs.readFileSync('example.sus','utf8')
+const sus_validate = SusAnalyzer.validate(sus)
+const sus_meta = SusAnalyzer.getMeta(sus)
+
+console.log(sus_validate)
 console.log(sus_meta)
 ```
 
