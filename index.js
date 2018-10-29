@@ -1,3 +1,19 @@
+const base = {
+  SONGID: "",
+  TITLE: "",
+  ARTIST: "",
+  DESIGNER: "",
+  DIFFICULTY: {LEVEL: 0,STAR: "",MARK: ""},
+  PLAYLEVEL: 0,
+  WAVE: "",
+  WAVEOFFSET: 0,
+  JACKET: "",
+  BACKGROUND: "",
+  MOVIE: "",
+  MOVIEOFFSET: 0,
+  BASEBPM: 0
+}
+
 const support_meta = [
   "SONGID",
   "TITLE",
@@ -27,8 +43,7 @@ const required_meta = [
 ]
 
 function susToArray(sus) {
-  if(!sus) throw new Error("Argument required");
-   return sus.split('\n')
+  return sus.split('\n')
     .filter(line => line)
     .filter(line => line.slice(0,1) === "#")
     .map(line => line.slice(1))
@@ -79,7 +94,7 @@ function susToArray(sus) {
 
 module.exports = {
   getMeta: sus => {
-    const metaObj = {}
+    const metaObj = Object.assign({}, base)
     susToArray(sus).forEach(line => metaObj[line[0]] = line[1])
     return metaObj
   },
