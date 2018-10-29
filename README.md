@@ -2,6 +2,18 @@
 [![Build Status](https://travis-ci.org/KawakawaRitsuki/sus-analyzer.svg?branch=master)](https://travis-ci.org/KawakawaRitsuki/sus-analyzer)   
 SeaUrchinScore Analyzer for node
 
+## Installation
+
+```
+$ yarn add sus-analyzer
+```
+
+or
+
+```
+$ npm i sus-analyzer
+```
+
 ## How to use
 
 ```
