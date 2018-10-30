@@ -38,8 +38,7 @@ const required_meta = [
   "DIFFICULTY",
   "PLAYLEVEL",
   "WAVE",
-  "WAVEOFFSET",
-  "BASEBPM"
+  "WAVEOFFSET"
 ]
 
 function susToArray(sus) {
