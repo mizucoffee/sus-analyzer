@@ -27,4 +27,4 @@ ava('ANALYZE BASEBPM',t => t.true(SusAnalyzer.getMeta(sus).BASEBPM === 120))
 
 ava('VALIDATE GOOD SUS',t => t.true(SusAnalyzer.validate(sus).VALIDITY))
 ava('VALIDATE BAD SUS',t => t.false(SusAnalyzer.validate("#TITLE test").VALIDITY))
-ava('VALIDATE BAD SUS - MISSING META',t => t.true(SusAnalyzer.validate("#TITLE test").MISSING_META.toString() === [ 'SONGID', 'ARTIST', 'DESIGNER', 'DIFFICULTY', 'PLAYLEVEL', 'WAVE', 'WAVEOFFSET' ].toString()))
+ava('VALIDATE BAD SUS - MISSING META',t => t.true(SusAnalyzer.validate("#TITLE test").MISSING_META.toString() === [ 'SONGID', 'ARTIST', 'DESIGNER', 'DIFFICULTY', 'PLAYLEVEL' ].toString()))

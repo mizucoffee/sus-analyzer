@@ -36,9 +36,7 @@ const required_meta = [
   "ARTIST",
   "DESIGNER",
   "DIFFICULTY",
-  "PLAYLEVEL",
-  "WAVE",
-  "WAVEOFFSET"
+  "PLAYLEVEL"
 ]
 
 function susToArray(sus) {
