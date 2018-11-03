@@ -63,7 +63,7 @@ function susToArray(sus) {
           line[1] = {}
           if(isFinite(data.slice(0,1))) {
             line[1].LEVEL = Number(data.slice(0,1))
-            if(0 > line[1].LEVEL) line[1].LEVEL = 0
+            if(0 >= line[1].LEVEL) line[1].LEVEL = 0
             if(4 < line[1].LEVEL) line[1].LEVEL = 4
             if(line[1].LEVEL !== 4) break
             if(data.length === 1) break
