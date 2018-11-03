@@ -3,7 +3,7 @@ const base = {
   TITLE: "",
   ARTIST: "",
   DESIGNER: "",
-  DIFFICULTY: {LEVEL: 0,STAR: "",MARK: ""},
+  DIFFICULTY: {LEVEL: -1,STAR: "",MARK: ""},
   PLAYLEVEL: 0,
   WAVE: "",
   WAVEOFFSET: 0,
