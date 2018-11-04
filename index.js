@@ -4,7 +4,7 @@ const base = {
   ARTIST: "",
   DESIGNER: "",
   DIFFICULTY: {LEVEL: -1,STAR: "",MARK: ""},
-  PLAYLEVEL: 0,
+  PLAYLEVEL: {LEVEL: 0, PLUS:0 },
   WAVE: "",
   WAVEOFFSET: 0,
   JACKET: "",
@@ -57,9 +57,9 @@ function susToArray(sus) {
     .filter(line => support_meta.indexOf(line[0]) >= 0)
     .map(line => { if(line[1].slice(0,1) == '"' && line[1].slice(line[1].length-1) == '"') line[1] = line[1].slice(1,line[1].length-1);return line})
     .map(line => {
+      let data = line[1]
       switch(line[0]) {
         case "DIFFICULTY":
-          const data = line[1]
           line[1] = {}
           if(isFinite(data.slice(0,1))) {
             line[1].LEVEL = Number(data.slice(0,1))
@@ -69,7 +69,6 @@ function susToArray(sus) {
             if(data.length === 1) break
             line[1].STAR = data.slice(1).split("☆").length - 1
             line[1].MARK = data.slice(data.length-1)
-
           } else {
             line[1].LEVEL = 4
             if(data.length === 1) break
@@ -77,12 +76,21 @@ function susToArray(sus) {
             line[1].STAR = data.slice(1).split("☆").length- 1
           }
           break
-        case "PLAYLEVEL":
         case "WAVEOFFSET":
         case "MOVIEOFFSET":
         case "BASEBPM":
           if(!isFinite(line[1])) return []
           line[1] = Number(line[1])
+          break
+        case "PLAYLEVEL":
+          line[1] = {}
+          if (data.slice(-1) === '+') {
+            line[1].PLUS = 1
+            data = data.slice(0,-1)
+          }
+
+          if(!isFinite(data)) return []
+          line[1].LEVEL = Number(data)
           break
       }
       return line
