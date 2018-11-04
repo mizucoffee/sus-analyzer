@@ -1,3 +1,31 @@
+const difficultys = {
+  0: {
+    TEXT :"BASIC",
+    COLOR :"#19aa19",
+    BACKGROUND :"#e8f6e8"
+  },
+  1: {
+    TEXT :"ADVANCED",
+    COLOR :"#f55000",
+    BACKGROUND :"#feede5"
+  },
+  2: {
+    TEXT :"EXPERT",
+    COLOR :"#a00a50",
+    BACKGROUND :"#F5E6ED"
+  },
+  3: {
+    TEXT :"MASTER",
+    COLOR :"#8200dc",
+    BACKGROUND :"#f2e5fb"
+  },
+  4: {
+    TEXT :"WORLD'S END",
+    COLOR :"#000000",
+    BACKGROUND :"#e5e5e5"
+  }
+}
+
 const base = {
   SONGID: "",
   TITLE: "",
@@ -65,15 +93,17 @@ function susToArray(sus) {
             line[1].LEVEL = Number(data.slice(0,1))
             if(0 >= line[1].LEVEL) line[1].LEVEL = 0
             if(4 < line[1].LEVEL) line[1].LEVEL = 4
+            line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
             if(line[1].LEVEL !== 4) break
             if(data.length === 1) break
             line[1].STAR = data.slice(1).split("☆").length - 1
             line[1].MARK = data.slice(data.length-1)
           } else {
             line[1].LEVEL = 4
+            line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
             if(data.length === 1) break
-            line[1].MARK = data.slice(0,1)
             line[1].STAR = data.slice(1).split("☆").length- 1
+            line[1].MARK = data.slice(0,1)
           }
           break
         case "WAVEOFFSET":
@@ -91,6 +121,7 @@ function susToArray(sus) {
 
           if(!isFinite(data)) return []
           line[1].LEVEL = Number(data)
+          line[1].TEXT = `${line[1].LEVEL}${line[1].PLUS ? "+" : ""}`
           break
       }
       return line
