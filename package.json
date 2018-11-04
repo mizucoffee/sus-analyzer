@@ -1,6 +1,6 @@
 {
   "name": "sus-analyzer",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "index.js",
   "repository": "https://github.com/KawakawaRitsuki/sus-analyze.git",
   "author": "Ritsuki Goto <develop@mizucoffee.net>",

@@ -128,18 +128,23 @@ function susToArray(sus) {
     })
 }
 
+const getMeta = sus => {
+  const metaObj = Object.assign({}, base)
+  susToArray(sus).forEach(line => metaObj[line[0]] = line[1])
+  return metaObj
+}
+const validate = sus => {
+  const returnObj = {}
+  const meta = getMeta(sus)
+  const array = susToArray(sus).map(line => line[0])
+  let missing_meta = required_meta.filter(line => array.indexOf(line) === -1)
+  if(meta.DIFFICULTY.LEVEL === 4) missing_meta = missing_meta.filter(line => line !== "PLAYLEVEL");
+  returnObj.VALIDITY = missing_meta.length === 0
+  returnObj.MISSING_META = missing_meta
+  return returnObj
+}
+
 module.exports = {
-  getMeta: sus => {
-    const metaObj = Object.assign({}, base)
-    susToArray(sus).forEach(line => metaObj[line[0]] = line[1])
-    return metaObj
-  },
-  validate: sus => {
-    const returnObj = {}
-    const array = susToArray(sus).map(line => line[0])
-    let missing_meta = required_meta.filter(line => array.indexOf(line) === -1)
-    returnObj.VALIDITY = missing_meta.length === 0
-    returnObj.MISSING_META = missing_meta
-    return returnObj
-  }
+  getMeta: getMeta,
+  validate: validate
 }

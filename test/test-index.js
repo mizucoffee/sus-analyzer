@@ -16,7 +16,7 @@ ava('ANALYZE DIFFICULTY5',t => t.true(SusAnalyzer.getMeta('#DIFFICULTY "両:☆�
 ava('ANALYZE DIFFICULTY6',t => t.true(SusAnalyzer.getMeta('#DIFFICULTY "両:☆☆"').DIFFICULTY.MARK === "両"))
 ava('ANALYZE DIFFICULTY7',t => t.true(SusAnalyzer.getMeta('#DIFFICULTY "両:☆☆"').DIFFICULTY.STAR === 2))
 ava('ANALYZE DIFFICULTY8',t => t.true(SusAnalyzer.getMeta('#DIFFICULTY 3').DIFFICULTY.TEXT === "MASTER"))
-ava('ANALYZE PLAYLEVEL',t => t.true(SusAnalyzer.getMeta(sus).PLAYLEVEL.LEVEL === 12))
+ava('ANALYZE PLAYLEVEL',t => t.true(SusAnalyzer.getMeta('#PLAYLEVEL 12').PLAYLEVEL.LEVEL === 12))
 ava('ANALYZE PLAYLEVEL+',t => t.true(SusAnalyzer.getMeta('#PLAYLEVEL 12+').PLAYLEVEL.PLUS === 1))
 ava('ANALYZE PLAYLEVEL TEXT',t => t.true(SusAnalyzer.getMeta('#PLAYLEVEL 12+').PLAYLEVEL.TEXT === "12+"))
 ava('ANALYZE WAVE',t => t.true(SusAnalyzer.getMeta(sus).WAVE === "filename.wav"))
