@@ -69,7 +69,6 @@ const required_meta = [
 
 function susToArray(sus) {
   return sus.split('\n')
-    .filter(line => line)
     .filter(line => line.slice(0,1) === "#")
     .map(line => line.slice(1))
     .filter(line => !isFinite(line.slice(0,3)))
