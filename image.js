@@ -42,13 +42,13 @@ const create = async sus => {
   const air = {
     1: await loadImage('asset/air-up.png'),
     2: await loadImage('asset/air-down.png'),
-    3: await loadImage('asset/air-down.png'),
-    4: await loadImage('asset/air-down.png'),
-    5: await loadImage('asset/air-down.png'),
-    6: await loadImage('asset/air-down.png'),
-    7: await loadImage('asset/air-down.png'),
-    8: await loadImage('asset/air-down.png'),
-    9: await loadImage('asset/air-down.png'),
+    3: await loadImage('asset/air-up-left.png'),
+    4: await loadImage('asset/air-up-right.png'),
+    5: await loadImage('asset/air-down-left.png'),
+    6: await loadImage('asset/air-down-right.png'),
+    7: await loadImage('asset/air-up.png'),
+    8: await loadImage('asset/air-up-left.png'),
+    9: await loadImage('asset/air-up-right.png'),
   }
 
   const measure = await loadImage('asset/measure.png')
@@ -91,7 +91,23 @@ const create = async sus => {
       case '5':
         measure.data.forEach(note => {
           if(note.type == '0') return
-          ctx.drawImage(air[note.type] ,measure.lane * 16 + 8 , base + space * note.pos + 20, note.width * 16, note.width * 8)
+          switch (note.type) {
+            case '1':
+            case '2':
+            case '7':
+              ctx.drawImage(air[note.type] ,measure.lane * 16 + 8 , base + space * note.pos + 20, note.width * 16, note.width * 8)
+              break
+            case '3':
+            case '6':
+            case '8':
+              ctx.drawImage(air[note.type] ,measure.lane * 16 + 8 - 16 , base + space * note.pos + 20, note.width * 16, note.width * 8)
+              break
+            case '4':
+            case '5':
+            case '9':
+              ctx.drawImage(air[note.type] ,measure.lane * 16 + 8 + 16 , base + space * note.pos + 20, note.width * 16, note.width * 8)
+              break
+          }
         })
         break
     }
