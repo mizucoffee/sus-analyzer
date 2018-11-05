@@ -13,6 +13,9 @@ const create = async sus => {
   const measure = await loadImage('asset/measure.png')
   const split = await loadImage('asset/split.png')
 
+  // 起点変更
+  ctx.transform(1, 0, 0, -1, 0, 768 * sus.measure)
+
   // Draw Base
   for(let i = 0; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768)
 
@@ -20,7 +23,8 @@ const create = async sus => {
   let drawedMeasure = sus.measure
   sus.BEATs.reverse().forEach(e => {
     console.log(e)
-    for(let i = e.measure; i <= drawedMeasure; i++){
+    for(let i = e.measure; i < drawedMeasure; i++){
+      console.log(i)
       const startPos = i * 768
       const space = 768 / e.beat
       for(let j = 1; j < e.beat; j++)
