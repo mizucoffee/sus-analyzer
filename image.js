@@ -14,19 +14,19 @@ const create = async sus => {
       right: await loadImage('asset/tap-right.png')
     },
     2: {
-      left: await loadImage('asset/tap-left.png'),
-      center: await loadImage('asset/tap-center.png'),
-      right: await loadImage('asset/tap-right.png')
+      left: await loadImage('asset/extap-left.png'),
+      center: await loadImage('asset/extap-center.png'),
+      right: await loadImage('asset/extap-right.png')
     },
     3: {
-      left: await loadImage('asset/tap-left.png'),
-      center: await loadImage('asset/tap-center.png'),
-      right: await loadImage('asset/tap-right.png')
+      left: await loadImage('asset/flick-left.png'),
+      center: await loadImage('asset/flick-center.png'),
+      right: await loadImage('asset/flick-right.png')
     },
     4: {
-      left: await loadImage('asset/tap-left.png'),
-      center: await loadImage('asset/tap-center.png'),
-      right: await loadImage('asset/tap-right.png')
+      left: await loadImage('asset/hell-left.png'),
+      center: await loadImage('asset/hell-center.png'),
+      right: await loadImage('asset/hell-right.png')
     },
     5: {
       left: await loadImage('asset/tap-left.png'),
