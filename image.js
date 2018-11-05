@@ -55,11 +55,10 @@ const create = async sus => {
   const split = await loadImage('asset/split.png')
 
   // 起点変更
-  ctx.transform(1, 0, 0, -1, 0, 768 * sus.measure)
+  //ctx.transform(1, 0, 0, -1, 0, 768 * sus.measure)
 
   // 小節線描画
-  for(let i = 0; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768)
-  ctx.drawImage(measure, 0, -768)
+  for(let i = -1; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768 + 16)
 
   // 拍線描画
   let drawedMeasure = sus.measure
@@ -68,15 +67,14 @@ const create = async sus => {
       const startPos = i * 768
       const space = 768 / e.beat
       for(let j = 1; j < e.beat; j++)
-        ctx.drawImage(split, 0, startPos + space*j)
+        ctx.drawImage(split, 0, startPos + space*j + 16)
     }
     drawedMeasure = e.measure
   })
 
-  ctx.translate(0,-8)
+  ctx.translate(0,8)
 
   sus.shortNoteLines.forEach(measure => {
-    console.log(measure)
     const base = measure.measure * 768
     const space = 768 / measure.split
     switch(measure.type) {
@@ -113,8 +111,20 @@ const create = async sus => {
     }
   })
 
+  sus.longNotes.forEach(long => {
+    long.notes.forEach(note => {
+      const base = note.measure * 768
+      const space = 768 / note.split
+      ctx.drawImage(notes[1].left   ,note.lane * 16 + 8 , base + space * note.pos)
+      ctx.drawImage(notes[1].center ,note.lane * 16 + 8 + 4 , base + space * note.pos, note.width * 16 - 8, 16)
+      ctx.drawImage(notes[1].right  ,note.lane * 16 + 8 + note.width * 16 - 4, base + space * note.pos)
 
-  setTimeout(() => fs.writeFileSync('test.html','<img style="display: block; margin: 0 auto;" src="' + canvas.toDataURL() + '" />'),1000);
+    })
+  })
+
+
+
+  setTimeout(() => fs.writeFileSync('test.html','<img style="display: block; margin: 0 auto; transform: rotateX(180deg)" src="' + canvas.toDataURL() + '" />'),1000);
 
 }
 
