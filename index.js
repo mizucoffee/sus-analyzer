@@ -24,8 +24,8 @@ const splitSus = sus => {
       const data = line.split(':')[1].trim()
       l.split = data.length / 2
       l.data = []
-      for (let i = 0; i < data.length; i++) {
-        l.data.push({pos: i,type: data[i*2], width: parseInt(data[i*2+1], 17) - 1})
+      for (let i = 0; i < data.length / 2; i++) {
+        l.data.push({pos: i,type: data[i*2], width: parseInt(data[i*2+1], 17)})
       }
       return l
     })
@@ -41,7 +41,7 @@ const splitSus = sus => {
       l.split = data.length / 2
       l.id = parseInt(line.slice(5,6), 36)
       l.data = []
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length / 2; i++) {
         l.data.push({pos: i,type: data[i*2], width: parseInt(data[i*2+1], 17) - 1})
       }
       return l

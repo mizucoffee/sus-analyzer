@@ -4,27 +4,57 @@ const fs = require('fs')
 
 const create = async sus => {
 
-  const canvas = createCanvas(272, 768 * sus.measure)
+  const canvas = createCanvas(272, 768 * sus.measure + 16)
   const ctx = canvas.getContext('2d')
 
-  const tap_left = await loadImage('asset/tap-left.png')
-  const tap_right = await loadImage('asset/tap-right.png')
-  const tap_center = await loadImage('asset/tap-center.png')
+  const notes = {
+    1: {
+      left: await loadImage('asset/tap-left.png'),
+      center: await loadImage('asset/tap-center.png'),
+      right: await loadImage('asset/tap-right.png')
+    },
+    2: {
+      left: await loadImage('asset/tap-left.png'),
+      center: await loadImage('asset/tap-center.png'),
+      right: await loadImage('asset/tap-right.png')
+    },
+    3: {
+      left: await loadImage('asset/tap-left.png'),
+      center: await loadImage('asset/tap-center.png'),
+      right: await loadImage('asset/tap-right.png')
+    },
+    4: {
+      left: await loadImage('asset/tap-left.png'),
+      center: await loadImage('asset/tap-center.png'),
+      right: await loadImage('asset/tap-right.png')
+    },
+    5: {
+      left: await loadImage('asset/tap-left.png'),
+      center: await loadImage('asset/tap-center.png'),
+      right: await loadImage('asset/tap-right.png')
+    },
+    6: {
+      left: await loadImage('asset/tap-left.png'),
+      center: await loadImage('asset/tap-center.png'),
+      right: await loadImage('asset/tap-right.png')
+    },
+  }
   const measure = await loadImage('asset/measure.png')
   const split = await loadImage('asset/split.png')
 
   // 起点変更
   ctx.transform(1, 0, 0, -1, 0, 768 * sus.measure)
 
-  // Draw Base
+  // 小節描画
   for(let i = 0; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768)
+  ctx.drawImage(measure, 0, -768)
+  
+  ctx.translate(0,-8)
 
-  // Draw Beat Line
+  // 拍線描画
   let drawedMeasure = sus.measure
   sus.BEATs.reverse().forEach(e => {
-    console.log(e)
     for(let i = e.measure; i < drawedMeasure; i++){
-      console.log(i)
       const startPos = i * 768
       const space = 768 / e.beat
       for(let j = 1; j < e.beat; j++)
@@ -33,31 +63,30 @@ const create = async sus => {
     drawedMeasure = e.measure
   })
 
-  sus.shortNoteLines.forEach(e => {
+  sus.shortNoteLines.forEach(measure => {
+    console.log(measure)
+    const base = measure.measure * 768
+    const space = 768 / measure.split
+    switch(measure.type) {
+      case '1':
+        measure.data.forEach(note => {
+          if(note.type == '0') return
+          ctx.drawImage(notes[note.type].left   ,measure.lane * 16 + 8 , base + space * note.pos)
+          ctx.drawImage(notes[note.type].center ,measure.lane * 16 + 8 + 4 , base + space * note.pos, note.width * 16 - 8, 16)
+          ctx.drawImage(notes[note.type].right  ,measure.lane * 16 + 8 + note.width * 16 - 4, base + space * note.pos)
+        })
+        break
+      case '5':
+        break
+    }
+    //ctx.drawImage(tap_left, 8, 50)
+    //ctx.drawImage(tap_center, 12, 50)
+    //ctx.drawImage(tap_right, 68, 50)
   })
 
 
-  setTimeout(() => fs.writeFileSync('test.html','<img src="' + canvas.toDataURL() + '" />'),1000);
+  setTimeout(() => fs.writeFileSync('test.html','<img style="display: block; margin: 0 auto;" src="' + canvas.toDataURL() + '" />'),1000);
 
-}
-
-function drawTAP(width) {
-  ctx.drawImage(tap_left, 8, 50)
-  ctx.drawImage(tap_center, 12, 50)
-  ctx.drawImage(tap_center, 16, 50)
-  ctx.drawImage(tap_center, 20, 50)
-  ctx.drawImage(tap_center, 24, 50)
-  ctx.drawImage(tap_center, 28, 50)
-  ctx.drawImage(tap_center, 32, 50)
-  ctx.drawImage(tap_center, 36, 50)
-  ctx.drawImage(tap_center, 40, 50)
-  ctx.drawImage(tap_center, 44, 50)
-  ctx.drawImage(tap_center, 48, 50)
-  ctx.drawImage(tap_center, 52, 50)
-  ctx.drawImage(tap_center, 56, 50)
-  ctx.drawImage(tap_center, 60, 50)
-  ctx.drawImage(tap_center, 64, 50)
-  ctx.drawImage(tap_right, 68, 50)
 }
 
 module.exports = create
