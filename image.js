@@ -39,17 +39,27 @@ const create = async sus => {
       right: await loadImage('asset/tap-right.png')
     },
   }
+  const air = {
+    1: await loadImage('asset/air-up.png'),
+    2: await loadImage('asset/air-down.png'),
+    3: await loadImage('asset/air-down.png'),
+    4: await loadImage('asset/air-down.png'),
+    5: await loadImage('asset/air-down.png'),
+    6: await loadImage('asset/air-down.png'),
+    7: await loadImage('asset/air-down.png'),
+    8: await loadImage('asset/air-down.png'),
+    9: await loadImage('asset/air-down.png'),
+  }
+
   const measure = await loadImage('asset/measure.png')
   const split = await loadImage('asset/split.png')
 
   // 起点変更
   ctx.transform(1, 0, 0, -1, 0, 768 * sus.measure)
 
-  // 小節描画
+  // 小節線描画
   for(let i = 0; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768)
   ctx.drawImage(measure, 0, -768)
-  
-  ctx.translate(0,-8)
 
   // 拍線描画
   let drawedMeasure = sus.measure
@@ -62,6 +72,8 @@ const create = async sus => {
     }
     drawedMeasure = e.measure
   })
+
+  ctx.translate(0,-8)
 
   sus.shortNoteLines.forEach(measure => {
     console.log(measure)
@@ -77,11 +89,12 @@ const create = async sus => {
         })
         break
       case '5':
+        measure.data.forEach(note => {
+          if(note.type == '0') return
+          ctx.drawImage(air[note.type] ,measure.lane * 16 + 8 , base + space * note.pos + 20, note.width * 16, note.width * 8)
+        })
         break
     }
-    //ctx.drawImage(tap_left, 8, 50)
-    //ctx.drawImage(tap_center, 12, 50)
-    //ctx.drawImage(tap_right, 68, 50)
   })
 
 
