@@ -135,16 +135,16 @@ const create = async sus => {
             break
           case '4':
             ctx.beginPath();
-            ctx.moveTo(note.lane * 16 + 8 + 28, base + space * note.pos + 8);
+            ctx.moveTo(note.lane * 16 + 8 + ( note.width * 16 - 8 ) / 2, base + space * note.pos + 8);
             for(let i = 0; i < controls.length; i++) {
-              ctx.lineTo(controls[i].lane * 16 + 8 + 28, base + space * controls[i].pos + 8);
+              ctx.lineTo(controls[i].lane * 16 + 8 + ( controls[i].width * 16 - 8 ) / 2, base + space * controls[i].pos + 8);
             }
-            ctx.lineTo(note2.lane * 16 + 8 + 28,base2 + space2 * note2.pos + 8);
-            ctx.lineTo(note2.lane * 16 + 8 + note2.width * 16 - 28,base2 + space2 * note2.pos + 8);
+            ctx.lineTo(note2.lane * 16 + 8 + ( note2.width * 16 - 8 ) / 2 ,base2 + space2 * note2.pos + 8);
+            ctx.lineTo(note2.lane * 16 + 8 + note2.width * 16 - ( note2.width * 16 - 8 ) / 2,base2 + space2 * note2.pos + 8);
             for(let i = controls.length - 1; i >= 0; i--) {
-              ctx.lineTo(controls[i].lane * 16 + 8 + note2.width * 16 - 28, base + space * controls[i].pos + 8);
+              ctx.lineTo(controls[i].lane * 16 + 8 + controls[i].width * 16 - ( controls[i].width * 16 - 8 ) / 2, base + space * controls[i].pos + 8);
             }
-            ctx.lineTo(note.lane * 16 + 8 + note.width * 16 - 28,base + space * note.pos + 8);
+            ctx.lineTo(note.lane * 16 + 8 + note.width * 16 - ( note.width * 16 - 8 ) / 2,base + space * note.pos + 8);
             ctx.closePath();
             break
         }
