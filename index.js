@@ -21,7 +21,7 @@ const splitSus = sus => {
       l.measure = Number(line.slice(0,3))
       l.type = line.slice(3,4)
       l.lane = parseInt(line.slice(4,5), 16)
-      const data = line.split(':')[1].trim()
+      const data = line.split(':')[1].trim().replace(/ /g,'')
       l.split = data.length / 2
       l.data = []
       for (let i = 0; i < data.length / 2; i++) {
