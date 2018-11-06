@@ -40,7 +40,7 @@ const splitSus = sus => {
       l.measure = Number(line.slice(0,3))
       l.type = line.slice(3,4)
       l.lane = parseInt(line.slice(4,5), 16)
-      const data = line.split(':')[1].trim()
+      const data = line.split(':')[1].trim().replace(/ /g,'')
       l.split = data.length / 2
       l.id = parseInt(line.slice(5,6), 36)
       l.data = []
@@ -100,6 +100,7 @@ const splitSus = sus => {
             case '3':
             case '4':
             case '5':
+              console.log(e)
               longs[e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
               break
           }

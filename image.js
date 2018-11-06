@@ -108,16 +108,16 @@ const create = async sus => {
       ctx.closePath();
       // (longs.notes[i+1].pos - long.notes[i].pos) * (768 / long.notes[i+1].split) - 16
       let gradient = ctx.createLinearGradient(0,base + space * note.pos + 16, 0 ,base2 + space2 * note2.pos);
-          gradient.addColorStop(0, '#ff4ce1aa');
-          gradient.addColorStop(1, '#ff4ce1aa');
+          gradient.addColorStop(0, '#ff4ce1bb');
+          gradient.addColorStop(1, '#ff4ce1bb');
       switch(long.type) {
         case '2':
-          gradient.addColorStop(0.2, '#f6ff4caa');
-          gradient.addColorStop(0.8, '#f6ff4caa');
+          gradient.addColorStop(0.2, '#f6ff4cbb');
+          gradient.addColorStop(0.8, '#f6ff4cbb');
           break
         case '3':
-          gradient.addColorStop(0.2, '#4cd5ffaa');
-          gradient.addColorStop(0.8, '#4cd5ffaa');
+          gradient.addColorStop(0.2, '#4cd5ffbb');
+          gradient.addColorStop(0.8, '#4cd5ffbb');
           break
         case '4':
           break
