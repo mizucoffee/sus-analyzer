@@ -62,14 +62,16 @@ const create = async sus => {
       center: await loadImage('asset/slide-center.png'),
       step_center: await loadImage('asset/slide-step-center.png'),
       right: await loadImage('asset/slide-right.png'),
+    },
+    '4': {
+      left: await loadImage('asset/air-action-left.png'),
+      center: await loadImage('asset/air-action-center.png'),
+      right: await loadImage('asset/air-action-right.png'),
     }
   }
 
   const measure = await loadImage('asset/measure.png')
   const split = await loadImage('asset/split.png')
-
-  // 起点変更
-  //ctx.transform(1, 0, 0, -1, 0, 768 * sus.measure)
 
   // 小節線描画
   for(let i = -1; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768 + 16)
@@ -89,45 +91,87 @@ const create = async sus => {
   ctx.translate(0,8)
 
   sus.longNotes.forEach(long => {
-    let processed = 0
+    let before = null
+    let controls = []
     for(let i = 0; i < long.notes.length - 1; i++){
-      const note = long.notes[i]
-      const note2 = long.notes[i+1]
+      const note = before || long.notes[i]
       const base = note.measure * 768
-      const base2 = note2.measure * 768
       const space = 768 / note.split
+
+      const note2 = long.notes[i+1]
+      const base2 = note2.measure * 768
       const space2 = 768 / note2.split
-      
-      ctx.beginPath();
-      ctx.moveTo(note.lane * 16 + 8 + 4 , base + space * note.pos + 16);
-      //ctx.quadraticCurveTo(100,100,30,0);
-      ctx.lineTo(note2.lane * 16 + 8 + 4 ,base2 + space2 * note2.pos);
-      ctx.lineTo(note2.lane * 16 + 8 + note2.width * 16 - 4,base2 + space2 * note2.pos);
-      ctx.lineTo(note.lane * 16 + 8 + note.width * 16 - 4,base + space * note.pos + 16);
-      //ctx.quadraticCurveTo(70,100,70,200);
-      ctx.closePath();
-      // (longs.notes[i+1].pos - long.notes[i].pos) * (768 / long.notes[i+1].split) - 16
-      let gradient = ctx.createLinearGradient(0,base + space * note.pos + 16, 0 ,base2 + space2 * note2.pos);
-          gradient.addColorStop(0, '#ff4ce1bb');
-          gradient.addColorStop(1, '#ff4ce1bb');
+
+      if(note2.type == '4' || note2.type == '5') {
+        before = note
+        controls.push(note2)
+        continue
+      }
+      console.log(note) // 始点
+      console.log(note2) // 終点
+      console.log(controls) //何某か中継点
+      console.log()
+
       switch(long.type) {
         case '2':
-          gradient.addColorStop(0.2, '#f6ff4cbb');
-          gradient.addColorStop(0.8, '#f6ff4cbb');
-          break
         case '3':
-          gradient.addColorStop(0.2, '#4cd5ffbb');
-          gradient.addColorStop(0.8, '#4cd5ffbb');
+          ctx.beginPath();
+          ctx.moveTo(note.lane * 16 + 8 + 4, base + space * note.pos + 16);
+          for(let i = 0; i < controls.length; i++) {
+            ctx.lineTo(controls[i].lane * 16 + 8 + 4, controls[i].measure * 768 + 768 / controls[i].split * controls[i].pos + 8);
+          }
+          ctx.lineTo(note2.lane * 16 + 8 + 4,base2 + space2 * note2.pos);
+          ctx.lineTo(note2.lane * 16 + 8 + note2.width * 16 - 4,base2 + space2 * note2.pos);
+          for(let i = controls.length - 1; i >= 0; i--) {
+            ctx.lineTo(controls[i].lane * 16 + 8 + controls[i].width * 16 - 4, controls[i].measure * 768 + 768 / controls[i].split * controls[i].pos + 8);
+          }
+          ctx.lineTo(note.lane * 16 + 8 + note.width * 16 - 4,base + space * note.pos + 16);
+          ctx.closePath();
           break
         case '4':
+          ctx.beginPath();
+          ctx.moveTo(note.lane * 16 + 8 + 28, base + space * note.pos + 8);
+          for(let i = 0; i < controls.length; i++) {
+            ctx.lineTo(controls[i].lane * 16 + 8 + 28, base + space * controls[i].pos + 8);
+          }
+          ctx.lineTo(note2.lane * 16 + 8 + 28,base2 + space2 * note2.pos + 8);
+          ctx.lineTo(note2.lane * 16 + 8 + note2.width * 16 - 28,base2 + space2 * note2.pos + 8);
+          for(let i = controls.length - 1; i >= 0; i--) {
+            ctx.lineTo(controls[i].lane * 16 + 8 + note2.width * 16 - 28, base + space * controls[i].pos + 8);
+          }
+          ctx.lineTo(note.lane * 16 + 8 + note.width * 16 - 28,base + space * note.pos + 8);
+          ctx.closePath();
+          break
+      }
+      let gradient = ctx.createLinearGradient(0,base + space * note.pos + 16, 0 ,base2 + space2 * note2.pos);
+      switch(long.type) {
+        case '2':
+          gradient.addColorStop(0, '#ff4ce1bb');
+          gradient.addColorStop(0.2, '#f6ff4cbb');
+          gradient.addColorStop(0.8, '#f6ff4cbb');
+          gradient.addColorStop(1, '#ff4ce1bb');
+          break
+        case '3':
+          gradient.addColorStop(0, '#ff4ce1bb');
+          gradient.addColorStop(0.2, '#4cd5ffbb');
+          gradient.addColorStop(0.8, '#4cd5ffbb');
+          gradient.addColorStop(1, '#ff4ce1bb');
+          break
+        case '4':
+          gradient.addColorStop(0, '#4cff51bb');
+          gradient.addColorStop(1, '#4cff51bb');
           break
       }
       ctx.fillStyle = gradient //ctx.createPattern(STRUT[long.type], "repeat-x")
       ctx.fill();
-      // ctx.drawImage(STRUT[long.type], note.lane * 16 + 8 , base + space * note.pos + 16, note.width * 16, (long.notes[i+1].pos - long.notes[i].pos) * (768 / long.notes[i+1].split) - 16)
+      if(note2.type == '2' || note2.type == '3' ) {
+        before = null
+        controls = []
+      }
     }
     long.notes.forEach(note => {
-      if(!(long.type == 2 || long.type == 3)) return
+      if(!(long.type == 2 || long.type == 3 || long.type == 4)) return
+      if(note.type == '4' || note.type == '5') return
       const base = note.measure * 768
       const space = 768 / note.split
       ctx.drawImage(LONG[long.type].left   ,note.lane * 16 + 8 , base + space * note.pos)
@@ -172,7 +216,6 @@ const create = async sus => {
         break
     }
   })
-
 
 
   setTimeout(() => fs.writeFileSync('test.html','<img style="display: block; margin: 0 auto; transform: rotateX(180deg)" src="' + canvas.toDataURL() + '" />'),1000);
