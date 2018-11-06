@@ -217,8 +217,7 @@ const create = async sus => {
     }
   })
 
-
-  setTimeout(() => fs.writeFileSync('test.html','<img style="display: block; margin: 0 auto; transform: rotateX(180deg)" src="' + canvas.toDataURL() + '" />'),1000);
+  return canvas.toDataURL()
 
 }
 
