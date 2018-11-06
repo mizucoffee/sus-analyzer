@@ -50,6 +50,20 @@ const create = async sus => {
     8: await loadImage('asset/air-up-left.png'),
     9: await loadImage('asset/air-up-right.png'),
   }
+  const LONG = {
+    '2': {
+      left: await loadImage('asset/hold-left.png'),
+      center: await loadImage('asset/hold-center.png'),
+      step_center: await loadImage('asset/hold-step-center.png'),
+      right: await loadImage('asset/hold-right.png'),
+    },
+    '3': {
+      left: await loadImage('asset/slide-left.png'),
+      center: await loadImage('asset/slide-center.png'),
+      step_center: await loadImage('asset/slide-step-center.png'),
+      right: await loadImage('asset/slide-right.png'),
+    }
+  }
 
   const measure = await loadImage('asset/measure.png')
   const split = await loadImage('asset/split.png')
@@ -113,11 +127,12 @@ const create = async sus => {
 
   sus.longNotes.forEach(long => {
     long.notes.forEach(note => {
+      if(!(long.type == 2 || long.type == 3)) return
       const base = note.measure * 768
       const space = 768 / note.split
-      ctx.drawImage(notes[1].left   ,note.lane * 16 + 8 , base + space * note.pos)
-      ctx.drawImage(notes[1].center ,note.lane * 16 + 8 + 4 , base + space * note.pos, note.width * 16 - 8, 16)
-      ctx.drawImage(notes[1].right  ,note.lane * 16 + 8 + note.width * 16 - 4, base + space * note.pos)
+      ctx.drawImage(LONG[long.type].left   ,note.lane * 16 + 8 , base + space * note.pos)
+      ctx.drawImage(LONG[long.type].center ,note.lane * 16 + 8 + 4 , base + space * note.pos, note.width * 16 - 8, 16)
+      ctx.drawImage(LONG[long.type].right  ,note.lane * 16 + 8 + note.width * 16 - 4, base + space * note.pos)
 
     })
   })
