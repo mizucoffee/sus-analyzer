@@ -88,6 +88,54 @@ const create = async sus => {
 
   ctx.translate(0,8)
 
+  sus.longNotes.forEach(long => {
+    let processed = 0
+    for(let i = 0; i < long.notes.length - 1; i++){
+      const note = long.notes[i]
+      const note2 = long.notes[i+1]
+      const base = note.measure * 768
+      const base2 = note2.measure * 768
+      const space = 768 / note.split
+      const space2 = 768 / note2.split
+      
+      ctx.beginPath();
+      ctx.moveTo(note.lane * 16 + 8 + 4 , base + space * note.pos + 16);
+      //ctx.quadraticCurveTo(100,100,30,0);
+      ctx.lineTo(note2.lane * 16 + 8 + 4 ,base2 + space2 * note2.pos);
+      ctx.lineTo(note2.lane * 16 + 8 + note2.width * 16 - 4,base2 + space2 * note2.pos);
+      ctx.lineTo(note.lane * 16 + 8 + note.width * 16 - 4,base + space * note.pos + 16);
+      //ctx.quadraticCurveTo(70,100,70,200);
+      ctx.closePath();
+      // (longs.notes[i+1].pos - long.notes[i].pos) * (768 / long.notes[i+1].split) - 16
+      let gradient = ctx.createLinearGradient(0,base + space * note.pos + 16, 0 ,base2 + space2 * note2.pos);
+          gradient.addColorStop(0, '#ff4ce1aa');
+          gradient.addColorStop(1, '#ff4ce1aa');
+      switch(long.type) {
+        case '2':
+          gradient.addColorStop(0.2, '#f6ff4caa');
+          gradient.addColorStop(0.8, '#f6ff4caa');
+          break
+        case '3':
+          gradient.addColorStop(0.2, '#4cd5ffaa');
+          gradient.addColorStop(0.8, '#4cd5ffaa');
+          break
+        case '4':
+          break
+      }
+      ctx.fillStyle = gradient //ctx.createPattern(STRUT[long.type], "repeat-x")
+      ctx.fill();
+      // ctx.drawImage(STRUT[long.type], note.lane * 16 + 8 , base + space * note.pos + 16, note.width * 16, (long.notes[i+1].pos - long.notes[i].pos) * (768 / long.notes[i+1].split) - 16)
+    }
+    long.notes.forEach(note => {
+      if(!(long.type == 2 || long.type == 3)) return
+      const base = note.measure * 768
+      const space = 768 / note.split
+      ctx.drawImage(LONG[long.type].left   ,note.lane * 16 + 8 , base + space * note.pos)
+      ctx.drawImage(LONG[long.type].center ,note.lane * 16 + 8 + 4 , base + space * note.pos, note.width * 16 - 8, 16)
+      ctx.drawImage(LONG[long.type].right  ,note.lane * 16 + 8 + note.width * 16 - 4, base + space * note.pos)
+    })
+  })
+
   sus.shortNoteLines.forEach(measure => {
     const base = measure.measure * 768
     const space = 768 / measure.split
@@ -123,18 +171,6 @@ const create = async sus => {
         })
         break
     }
-  })
-
-  sus.longNotes.forEach(long => {
-    long.notes.forEach(note => {
-      if(!(long.type == 2 || long.type == 3)) return
-      const base = note.measure * 768
-      const space = 768 / note.split
-      ctx.drawImage(LONG[long.type].left   ,note.lane * 16 + 8 , base + space * note.pos)
-      ctx.drawImage(LONG[long.type].center ,note.lane * 16 + 8 + 4 , base + space * note.pos, note.width * 16 - 8, 16)
-      ctx.drawImage(LONG[long.type].right  ,note.lane * 16 + 8 + note.width * 16 - 4, base + space * note.pos)
-
-    })
   })
 
 
