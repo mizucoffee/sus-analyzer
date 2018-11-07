@@ -1,71 +1,14 @@
 const difficultys = {
-  0: {
-    TEXT :"BASIC",
-    COLOR :"#19aa19",
-    BACKGROUND :"#e8f6e8"
-  },
-  1: {
-    TEXT :"ADVANCED",
-    COLOR :"#f55000",
-    BACKGROUND :"#feede5"
-  },
-  2: {
-    TEXT :"EXPERT",
-    COLOR :"#a00a50",
-    BACKGROUND :"#F5E6ED"
-  },
-  3: {
-    TEXT :"MASTER",
-    COLOR :"#8200dc",
-    BACKGROUND :"#f2e5fb"
-  },
-  4: {
-    TEXT :"WORLD'S END",
-    COLOR :"#000000",
-    BACKGROUND :"#e5e5e5"
-  }
+  0: { TEXT :"BASIC",       COLOR :"#19aa19", BACKGROUND :"#e8f6e8" },
+  1: { TEXT :"ADVANCED",    COLOR :"#f55000", BACKGROUND :"#feede5" },
+  2: { TEXT :"EXPERT",      COLOR :"#a00a50", BACKGROUND :"#F5E6ED" },
+  3: { TEXT :"MASTER",      COLOR :"#8200dc", BACKGROUND :"#f2e5fb" },
+  4: { TEXT :"WORLD'S END", COLOR :"#000000", BACKGROUND :"#e5e5e5" }
 }
 
-const base = {
-  SONGID: "",
-  TITLE: "",
-  ARTIST: "",
-  DESIGNER: "",
-  DIFFICULTY: {LEVEL: -1,STAR: "",MARK: ""},
-  PLAYLEVEL: {LEVEL: 0, PLUS:0 },
-  WAVE: "",
-  WAVEOFFSET: 0,
-  JACKET: "",
-  BACKGROUND: "",
-  MOVIE: "",
-  MOVIEOFFSET: 0,
-  BASEBPM: 0
-}
-
-const support_meta = [
-  "SONGID",
-  "TITLE",
-  "ARTIST",
-  "DESIGNER",
-  "DIFFICULTY",
-  "PLAYLEVEL",
-  "WAVE",
-  "WAVEOFFSET",
-  "JACKET",
-  "BACKGROUND",
-  "MOVIE",
-  "MOVIEOFFSET",
-  "BASEBPM"
-]
-
-const required_meta = [
-  "SONGID",
-  "TITLE",
-  "ARTIST",
-  "DESIGNER",
-  "DIFFICULTY",
-  "PLAYLEVEL"
-]
+const base = { SONGID: "", TITLE: "", ARTIST: "", DESIGNER: "", DIFFICULTY: {LEVEL: -1,STAR: "",MARK: ""}, PLAYLEVEL: {LEVEL: 0, PLUS:0 }, WAVE: "", WAVEOFFSET: 0, JACKET: "", BACKGROUND: "", MOVIE: "", MOVIEOFFSET: 0, BASEBPM: 0 }
+const support_meta  = [ "SONGID", "TITLE", "ARTIST", "DESIGNER", "DIFFICULTY", "PLAYLEVEL", "WAVE", "WAVEOFFSET", "JACKET", "BACKGROUND", "MOVIE", "MOVIEOFFSET", "BASEBPM" ]
+const required_meta = [ "SONGID", "TITLE", "ARTIST", "DESIGNER", "DIFFICULTY", "PLAYLEVEL" ]
 
 const getMeta = sus => {
   const metaObj = Object.assign({}, base)
@@ -134,7 +77,6 @@ const susToMetaArray = sus => {
             line[1].PLUS = 1
             data = data.slice(0,-1)
           }
-
           if(!isFinite(data)) return []
           line[1].LEVEL = Number(data)
           line[1].TEXT = `${line[1].LEVEL}${line[1].PLUS ? "+" : ""}`
@@ -143,6 +85,7 @@ const susToMetaArray = sus => {
       return line
     })
 }
+
 module.exports = {
   getMeta: getMeta,
   validate: validate
