@@ -15,7 +15,7 @@ const splitSus = sus => {
     .map(line => ({measure: Number(line.slice(0,3)), beat: Number(line.split(':')[1].trim())}) )
     .sort((a,b) => a.measure < b.measure ? -1 : a.measure > b.measure ? 1 : 0)
 
-  data.shortNoteLines = validLines.filter(line => line.match(/^\d{3}[15][0-9A-F]:/))
+  data.shortNoteLines = validLines.filter(line => line.match(/^\d{3}[15][0-9a-fA-F]:/))
     .map(line => {
       let l = {}
       l.measure = Number(line.slice(0,3))
@@ -34,7 +34,7 @@ const splitSus = sus => {
   data.longNotes = []
 
   let mea = []
-  validLines.filter(line => line.match(/^\d{3}[2-4][0-9A-F][0-9A-Z]:/))
+  validLines.filter(line => line.match(/^\d{3}[2-4][0-9a-fA-F][0-9a-zA-Z]:/))
     .map(line => {
       let l = {}
       l.measure = Number(line.slice(0,3))
@@ -108,7 +108,7 @@ const splitSus = sus => {
     }
   })
 
-  data.measure = validLines.filter(line => line.match(/^\d{3}[2-4][0-9A-F][0-9A-Z]?:/))
+  data.measure = validLines.filter(line => line.match(/^\d{3}[2-4][0-9a-fA-F][0-9a-zA-Z]?:/))
     .map(line => Number(line.slice(0,3)))
     .reduce((a,b) => a > b ? a : b) + 1
 

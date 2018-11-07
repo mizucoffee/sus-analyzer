@@ -1,10 +1,11 @@
 const { createCanvas, loadImage } = require('canvas')
-
 const fs = require('fs')
 
 const create = async sus => {
 
   const images = []// measure / 40
+  sus.measure++
+
   for(let count = 0; count < Math.ceil(sus.measure / 40); count++){
     let a = ((count+1) * 40) > sus.measure ? sus.measure : (count+1) * 40
     let b = count*40
@@ -78,8 +79,11 @@ const create = async sus => {
     const measure = await loadImage('asset/measure.png')
     const split = await loadImage('asset/split.png')
 
+    ctx.scale(1, -1)
+    ctx.translate(0,8+a*-768 )
+
     // 小節線描画
-    for(let i = -1; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768 + 16)
+    for(let i = -1; i < sus.measure; i++) ctx.drawImage(measure, 0, i*768 + 8)
 
     // 拍線描画
     let drawedMeasure = sus.measure
@@ -92,8 +96,6 @@ const create = async sus => {
       }
       drawedMeasure = e.measure
     })
-
-    ctx.translate(0,8+b*-768)
 
     sus.longNotes.forEach(long => {
       let before = null
