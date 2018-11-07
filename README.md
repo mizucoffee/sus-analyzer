@@ -26,9 +26,11 @@ const SusAnalyzer = require('sus-analyzer'),
 const sus = fs.readFileSync('example.sus','utf8')
 const sus_validate = SusAnalyzer.validate(sus)
 const sus_meta = SusAnalyzer.getMeta(sus)
+const sus_data = SusAnalyzer.getData(sus)
 
 console.log(sus_validate)
 console.log(sus_meta)
+console.log(sus_data)
 ```
 
 ## サンプルデータについて
