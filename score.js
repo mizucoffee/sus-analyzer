@@ -69,9 +69,10 @@ module.exports = {
 
       return measure.map(e => {
         e.data = e.data.map(d => {
-          d.pos = d.pos * cur / measure[0].split
+          d.pos = d.pos * cur / e.split
           return d
         })
+        e.split = cur
         return e
       })
     })
@@ -85,21 +86,37 @@ module.exports = {
               if(d.pos !== i) return
               if(d.type === '0') return
               if(j == 0) {
-                // 無い時の処理（= d.type == 1が未処理）
+                //TODO: 無い時の処理（= d.type == 1が未処理）
                 if(d.type == '2') {
-                  longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
-                  data.longNotes.push(longs[e.type][e.id])
-                  longs[e.type][e.id] == null
+                  if(e.type == '2') {
+                    longs[e.type][e.lane][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                    data.longNotes.push(longs[e.type][e.lane][e.id])
+                    longs[e.type][e.lane][e.id] == null
+                  } else {
+                    longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                    data.longNotes.push(longs[e.type][e.id])
+                    longs[e.type][e.id] == null
+                  }
                 }
               } else if(j == 1) {
                 if(d.type == '3' || d.type == '4' || d.type == '5') {
-                  longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  if(e.type == '2') {
+                    longs[e.type][e.lane][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  } else {
+                    longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  }
                 }
               } else {
                 if(d.type == '1') {
                   if(!longs.hasOwnProperty(e.type)) longs[e.type] = {}
-                  longs[e.type][e.id] = {type: e.type, notes: []}
-                  longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  if(e.type == '2') {
+                    if(!longs[e.type].hasOwnProperty(e.lane)) longs[e.type][e.lane] = {}
+                    longs[e.type][e.lane][e.id] = {type: e.type, notes: []}
+                    longs[e.type][e.lane][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  } else {
+                    longs[e.type][e.id] = {type: e.type, notes: []}
+                    longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  }
                 }
               }
             })
