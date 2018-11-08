@@ -79,36 +79,35 @@ module.exports = {
     let longs = {}
     mea.forEach((measure,index) => {
       for(let i = 0; i < lcms[index]; i++) {
-        for(let j = 0; j < 3; j++) { // 優先して終点を探す
+        for(let j = 0; j < 3; j++) {
           measure.forEach(e => {
             e.data.forEach(d => {
               if(d.pos !== i) return
               if(d.type === '0') return
               if(j == 0) {
+                // 無い時の処理（= d.type == 1が未処理）
                 if(d.type == '2') {
-                  longs[e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
-                  data.longNotes.push(longs[e.id])
-                  longs[e.id] == null
+                  console.log(longs)
+                  console.log(longs[e.type][e.id])
+                  longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  data.longNotes.push(longs[e.type][e.id])
+                  longs[e.type][e.id] == null
                 }
               } else if(j == 1) {
-                if(d.type == '2' || d.type == '3' || d.type == '4') {
-                  longs[e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                if(d.type == '3' || d.type == '4' || d.type == '5') {
+                  longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
                 }
               } else {
                 if(d.type == '1') {
-                  longs[e.id] = {type: e.type, notes: []}
-                  longs[e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
+                  if(!longs.hasOwnProperty(e.type)) longs[e.type] = {}
+                  longs[e.type][e.id] = {type: e.type, notes: []}
+                  longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
                 }
               }
             })
           })
         }
       }
-    })
-
-    data.longNotes.forEach(e => {
-      if(e.notes[0].measure != 47) return
-      //      console.log(e)
     })
 
     data.measure = validLines.filter(line => line.match(/^\d{3}[2-4][0-9a-fA-F][0-9a-zA-Z]?:/))
