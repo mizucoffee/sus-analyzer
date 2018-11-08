@@ -87,8 +87,6 @@ module.exports = {
               if(j == 0) {
                 // 無い時の処理（= d.type == 1が未処理）
                 if(d.type == '2') {
-                  console.log(longs)
-                  console.log(longs[e.type][e.id])
                   longs[e.type][e.id].notes.push({measure: index,lane: e.lane,pos: d.pos, type: d.type, width: d.width ,split: e.split})
                   data.longNotes.push(longs[e.type][e.id])
                   longs[e.type][e.id] == null
