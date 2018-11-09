@@ -50,8 +50,7 @@ const susToMetaArray = sus => {
           line[1] = {}
           if(isFinite(data.slice(0,1))) {
             line[1].LEVEL = Number(data.slice(0,1))
-            if(0 >= line[1].LEVEL) line[1].LEVEL = 0
-            if(4 < line[1].LEVEL) line[1].LEVEL = 4
+            if(0 > line[1].LEVEL || line[1].LEVEL > 4) return null
             line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
             if(line[1].LEVEL !== 4) break
             if(data.length === 1) break
@@ -60,15 +59,15 @@ const susToMetaArray = sus => {
           } else {
             line[1].LEVEL = 4
             line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
+            line[1].MARK = data.slice(0,1)
             if(data.length === 1) break
             line[1].STAR = data.slice(1).split("☆").length- 1
-            line[1].MARK = data.slice(0,1)
           }
           break
         case "WAVEOFFSET":
         case "MOVIEOFFSET":
         case "BASEBPM":
-          if(!isFinite(line[1])) return []
+          if(!isFinite(line[1])) return null
           line[1] = Number(line[1])
           break
         case "PLAYLEVEL":
@@ -77,13 +76,14 @@ const susToMetaArray = sus => {
             line[1].PLUS = 1
             data = data.slice(0,-1)
           }
-          if(!isFinite(data)) return []
+          if(!isFinite(data)) return null
           line[1].LEVEL = Number(data)
           line[1].TEXT = `${line[1].LEVEL}${line[1].PLUS ? "+" : ""}`
           break
       }
       return line
     })
+    .filter(line => line)
 }
 
 module.exports = {
