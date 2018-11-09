@@ -3,30 +3,52 @@ module.exports = {
     const validLines = sus.split('\n').filter(line => line.slice(0,1) === "#").map(line => line.slice(1))
     const data = {}
 
-    data.BPMs = validLines.filter(line => line.match(/^\d{3}08:/))
-      .map(line => ({measure: Number(line.slice(0,3)), defnum: Number(line.split(':')[1].trim())}))
-      .sort((a,b) => a.measure < b.measure ? -1 : a.measure > b.measure ? 1 : 0)
+    const bpmDef = validLines
+      .filter(line => line.match(/^BPM\d{2}:/))
+      .reduce((list, line) => {
+        list[Number(line.slice(3,5))] = Number(line.split(':')[1].trim())
+        return list
+      },[])
 
-    data.BEATs = validLines.filter(line => line.match(/^\d{3}02:/))
+    data.BPMs = validLines
+      .filter(line => line.match(/^\d{3}08:/))
+      .map(line => ({measure: Number(line.slice(0,3)), bpm: bpmDef[Number(line.split(':')[1].trim())]}))
+
+    data.BEATs = validLines
+      .filter(line => line.match(/^\d{3}02:/))
       .map(line => ({measure: Number(line.slice(0,3)), beat: Number(line.split(':')[1].trim())}) )
-      .sort((a,b) => a.measure < b.measure ? -1 : a.measure > b.measure ? 1 : 0)
 
-    data.shortNoteLines = validLines.filter(line => line.match(/^\d{3}[15][0-9a-fA-F]:/))
+    beatDef = data.BEATs
+      .reduce((list, line) => {
+        list[line.measure] = line.beat
+        return list
+      },[])
+
+    data.shortNotes = validLines
+      .filter(line => line.match(/^\d{3}[1-5][0-9a-fA-F]:/))
+      .filter(line => line.split(':')[1].trim().replace(/ /g,'').length % 2 == 0) // データ部が奇数なものは弾く
+      .map(line => ({ measure: Number(line.slice(0,3)), lane_type: Number(line.slice(3,4)), lane: parseInt(line.slice(4,5), 16), data: line.split(':')[1].trim().replace(/ /g,'') }))
       .map(line => {
-        let l = {}
-        l.measure = Number(line.slice(0,3))
-        l.type = line.slice(3,4)
-        l.lane = parseInt(line.slice(4,5), 16)
-        const data = line.split(':')[1].trim().replace(/ /g,'')
-        l.split = data.length / 2
-        l.data = []
-        for (let i = 0; i < data.length / 2; i++) {
-          l.data.push({pos: i,type: data[i*2], width: parseInt(data[i*2+1], 17)})
-        }
-        return l
+        let i = line.measure
+        do {
+          line.beat = beatDef[i--]
+        } while(typeof line.beat === "undefined")
+        return line
       })
-      .sort((a,b) => a.measure < b.measure ? -1 : a.measure > b.measure ? 1 : 0)
+      .reduce((list, line) => {
+        [...Array(line.data.length / 2)]
+          .map((note, i) => `${line.data[i*2]}${line.data[i*2+1]}`)
+          .map((note, i) => ({ pos: 192 * line.beat / (line.data.length / 2) * i, type: parseInt(note[0], 36), width: parseInt(note[1], 17) }))
+          .filter(note => note.width !== 0)
+          .map(note => ({ measure: line.measure, beat: line.beat, lane_type: line.lane_type, lane: line.lane, note_type: note.type, position: note.pos, width: note.width}))
+          .forEach(e => list.push(e))
+        return list
+      },[])
 
+
+    const longNoteLines  = validLines
+      .filter(line => line.match(/^\d{3}[1-5][0-9a-fA-F][0-9a-zA-Z]:/))
+      .map(line => ({measure: Number(line.slice(0,3)), lane_type: Number(line.slice(3,4)), lane: parseInt(line.slice(4,5), 16), defnum: Number(line.split(':')[1].trim()), data: line.split(':')[1].trim().replace(/ /g,'')}))
     data.longNotes = []
 
     let mea = []
@@ -45,7 +67,6 @@ module.exports = {
         }
         return l
       })
-      .sort((a,b) => a.measure < b.measure ? -1 : a.measure > b.measure ? 1 : 0)
       .forEach(e => {
         if (!mea[e.measure]) mea[e.measure] = []
         mea[e.measure].push(e)
@@ -125,9 +146,9 @@ module.exports = {
       }
     })
 
-    data.measure = validLines.filter(line => line.match(/^\d{3}[2-4][0-9a-fA-F][0-9a-zA-Z]?:/))
+    data.measure = validLines.filter(line => line.match(/^\d{3}[1-5][0-9a-fA-F][0-9a-zA-Z]?:/))
       .map(line => Number(line.slice(0,3)))
-      .reduce((a,b) => a > b ? a : b) + 1
+      .reduce((a,b) => a > b ? a : b, 0) + 1
 
     return data
   }
