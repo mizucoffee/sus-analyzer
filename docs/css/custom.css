@@ -1,0 +1,14 @@
+body {
+  font-family: "Noto Sans JP";
+}
+.wy-menu-vertical a, .wy-menu-vertical .subnav a {
+  color: white;
+}
+
+.wy-menu-vertical * li.current a {
+  color: black;
+}
+
+.wy-menu-vertical span {
+  color: #ff0;
+}

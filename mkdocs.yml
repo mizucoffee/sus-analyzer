@@ -1,0 +1,16 @@
+site_name: sus-analyzer
+theme: readthedocs
+
+extra_css:
+    - "//fonts.googleapis.com/earlyaccess/notosansjp.css"
+    - "//fonts.googleapis.com/css?family=Open+Sans:600,800"
+    - "//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"
+    - "css/custom.css"
+
+markdown_extensions:
+    - admonition
+    - footnotes
+    - fontawesome_markdown
+    - def_list
+    - codehilite:
+        linenums: true
