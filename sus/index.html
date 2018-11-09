@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>susの仕様について - sus-analyzer</title>
+  <title>sus形式 - sus-analyzer</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -21,7 +21,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "sus\u306e\u4ed5\u69d8\u306b\u3064\u3044\u3066";
+    var mkdocs_page_name = "sus\u5f62\u5f0f";
     var mkdocs_page_input_path = "sus.md";
     var mkdocs_page_url = null;
   </script>
@@ -57,12 +57,29 @@
     <a class="" href="..">Home</a>
 	    </li>
           
+            <li class="toctree-l1">
+		
+    <a class="" href="../diff/">Seaurchinとの違い</a>
+	    </li>
+          
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">susの仕様について</a>
+    <a class="current" href="./">sus形式</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#sus">susの仕様について</a></li>
+    <li class="toctree-l2"><a href="#sus">sus形式</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#_1">概要</a></li>
+        
+            <li><a class="toctree-l3" href="#_2">単語の定義</a></li>
+        
+            <li><a class="toctree-l3" href="#_3">メタデータ</a></li>
+        
+            <li><a class="toctree-l3" href="#_4">譜面データ</a></li>
+        
+        </ul>
     
 
     </ul>
@@ -90,7 +107,7 @@
     
       
     
-    <li>susの仕様について</li>
+    <li>sus形式</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -100,7 +117,142 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="sus">susの仕様について</h1>
+                <h1 id="sus">sus形式</h1>
+<h2 id="_1">概要</h2>
+<p><strong>基本的には</strong><a href="https://seaurchin.kb10uy.org/wiki/score/format">Susフォーマット - Seaurchin Wiki</a>に準拠しています。</p>
+<p>細かいところは<a href="/diff/">Seaurchinとの違い</a>をご覧ください。</p>
+<h2 id="_2">単語の定義</h2>
+<p>このsus-analyzerでも使われている独自単語一覧です。</p>
+<dl>
+<dt>公式</dt>
+<dd>Seaurchinの事を指します。ややこしくてすみません。</dd>
+<dt>本家</dt>
+<dd>名前は伏せますが、ゲーセンにあるアレです。</dd>
+<dt>公式sus</dt>
+<dd>Seaurchin Wikiにある<a href="https://seaurchin.kb10uy.org/wiki/score/format">Susフォーマット - Seaurchin Wiki</a>の事を指します。</dd>
+<dt>メタデータ</dt>
+<dd>曲名やBPM等が該当します。#の直後が英字の行です。</dd>
+<dt>譜面データ</dt>
+<dd>ノーツが定義されている行です。#の直後が数字の行です。</dd>
+</dl>
+<h2 id="_3">メタデータ</h2>
+<p>sus-analyzerでは下記メタ情報に対応しています。 <br />
+Seaurchinとは違い、全てのメタデータを"で囲う事が出来ます。しかし、Seaurchinとの互換性を維持するために、公式susに準拠する事を<strong>強く</strong>おすすめします。</p>
+<p>sus-analyzerには独自の概念として、<font color="Crimson"><strong>必須項目</strong></font>と<font color="DarkBlue"><strong>任意項目</strong></font>が存在します。
+譜面を構成するにあたって最低限必要だろうと考えられるものです。
+必須項目は赤、任意項目は青に分類してあります。</p>
+<h3 id="songid"><font color="Crimson">#SONGID</font></h3>
+<p>楽曲IDを文字列で指定します。並び替え等に使用されます。差分譜面等でも楽曲が同一であればSONGIDは統一されるべきです。</p>
+<h3 id="title"><font color="Crimson">#TITLE</font></h3>
+<p>楽曲の曲名を文字列で指定します。</p>
+<h3 id="artist"><font color="Crimson">#ARTIST</font></h3>
+<p>楽曲のアーティストを文字列で指定します。</p>
+<h3 id="designer"><font color="Crimson">#DESIGNER</font></h3>
+<p>譜面デザイナーを文字列で指定します。
+ネタを仕込むのは構いませんが、バラバラにしすぎるとソート等で若干困るかもしれません。</p>
+<h3 id="difficulty"><font color="Crimson">#DIFFICULTY</font></h3>
+<p>譜面の難易度を<strong>数値</strong>か<strong>特定形式の文字列</strong>を指定します。レベルではありません。</p>
+<p>数値は下記の通りになります。</p>
+<ul>
+<li>0: BASIC</li>
+<li>1: ADVANCED</li>
+<li>2: EXPERT</li>
+<li>3: MASTER</li>
+<li>4: WORLD'S END</li>
+</ul>
+<p>文字列を指定する場合は2種類の記法があります。
+どちらでも指定出来る内容は変わりません。</p>
+<ul>
+<li>"4:☆☆両"</li>
+<li>"両:☆☆"</li>
+</ul>
+<h3 id="playlevel"><font color="Crimson">#PLAYLEVEL</font></h3>
+<p>譜面のレベルを基本的に数値で指定します。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>#PLAYLEVELは必須扱いになっていますが、WORLD'S ENDではPLAYLEVELを使用しません。
+そのため、<strong>WORLD'S ENDの譜面に限り不要</strong>です。
+WORLD'S ENDのsusファイルに記載することは可能ですが、処理には影響しません。</p>
+</div>
+<h3 id="wave"><font color="DarkBlue">#WAVE</font></h3>
+<p>楽曲の音楽ファイルをsusからの相対パスで指定します。
+拡張子は、sus-analyzerを依存しているパッケージによります。
+そのため、sus-analyzerでは拡張子の制限はありません。</p>
+<p>また、WAVEは実質的に必須項目だと思いますが、音源の入手元が個人により違う事等を考え、譜面ファイルとしては任意項目扱いにしています。</p>
+<h3 id="waveoffset"><font color="DarkBlue">#WAVEOFFSET</font></h3>
+<p>楽曲のオフセットを秒単位で指定します。正の値を指定すると譜面より遅れて再生が開始します。
+<strong>この項目は、WAVEを指定している時に限り必須です。</strong></p>
+<h3 id="movie"><font color="DarkBlue">#MOVIE</font></h3>
+<p>背景動画をsusからの相対パスで指定します。サイズは16:9推奨です。
+こちらも、拡張子はsus-analyzerを依存しているパッケージによります。
+そのため、sus-analyzerでは拡張子の制限はありません。</p>
+<h3 id="movieoffset"><font color="DarkBlue">#MOVIEOFFSET</font></h3>
+<p>拝啓動画のオフセットを秒単位で指定します。正の値を指定すると譜面より遅れて再生が開始します。
+<strong>この項目は、MOVIEを指定している時に限り必須です。</strong></p>
+<h3 id="jacket"><font color="DarkBlue">#JACKET</font></h3>
+<p>ジャケットの画像をsusからの相対パスで指定します。
+サイズは1:1推奨です。</p>
+<h3 id="background"><font color="DarkBlue">#BACKGROUND</font></h3>
+<p>背景画像をsusからの相対パスで指定します。
+こちらも拝啓動画と同じくサイズは16:9推奨です。</p>
+<h3 id="basebpm"><font color="Crimson">#BASEBPM</font></h3>
+<p>楽曲の基本となるBPMを数値で指定します。</p>
+<h2 id="_4">譜面データ</h2>
+<p>ノーツを表現するには2種類の構文存在します。</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>#mmmtl: &lt;NOTES&gt;
+#mmmtlx: &lt;NOTES&gt;
+</pre></div>
+</td></tr></table>
+
+<p>というものです。</p>
+<p>実際に数値に置き換えてみると</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>#00114: 1400 0000
+#00128A: 1400 2400
+</pre></div>
+</td></tr></table>
+
+<p>といった感じになります。</p>
+<p>上記の2行を例に説明していきたいと思います。</p>
+<h3 id="1-3-">1-3桁目 - 小節番号</h3>
+<p>#<font color="Crimson">001</font>14: 1400 0000 <br />
+#<font color="Crimson">001</font>28A: 1400 2400</p>
+<p>まず、上3桁について説明します。</p>
+<p>ここには<strong>小節番号</strong>を整数3桁で指定します。
+000が1小節目、001が2小節目、といった感じです。</p>
+<h3 id="4-">4桁目 - レーン種別</h3>
+<p>#001<font color="Crimson">1</font>4: 1400 0000 <br />
+#001<font color="Crimson">2</font>8A: 1400 2400</p>
+<p>4桁目には、<strong>レーン種別</strong>を整数1桁で指定します。</p>
+<ul>
+<li>1: ショートノーツレーン</li>
+<li>2: HOLDロングノーツレーン</li>
+<li>3: SLIDEロングノーツレーン</li>
+<li>4: AIR HOLD(Action含む)ロングノーツレーン</li>
+<li>5: AIRノーツレーン</li>
+</ul>
+<h3 id="5-">5桁目 - レーン番号</h3>
+<p>#0011<font color="Crimson">4</font>: 1400 0000 <br />
+#0012<font color="Crimson">8</font>A: 1400 2400</p>
+<p>5桁目にはレーン番号を指定します。</p>
+<p>レーンはスライダーに合わせて16分割されていて、左から0,1,2の順で最後が16になります。
+ただし、レーン番号に指定出来るのは1桁なので、16進数に変換して指定します。</p>
+<p>0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F</p>
+<h3 id="6-">6桁目 - 識別番号</h3>
+<p>#00128<font color="Crimson">A</font>: 1400 2400</p>
+<p>6桁目は少し特殊で、ロングレーンの識別番号を指定します。</p>
+<p>ロングレーンというのは4桁目が2,3,4に該当するものです。
+ロングノーツは重なる可能性があるので、識別番号で分けてあげる感じですね。</p>
+<p>ロングレーンの識別番号は、扱いがやや特殊です。</p>
+<p>全ての識別番号は、終了を同じタイミングで開始を行えます。 <br />
+全ての識別番号は、種別（SLIDE/HOLD/AIR）が違えば、同じ識別番号を同時に使用する事が可能です。 <br />
+HOLDの識別番号はレーンが違えば、同じ識別番号を同時に使用する事が可能です。   </p>
+<p>要するに、可能な限り使い回しが出来るようになっています。</p>
+<h3 id="56-">5桁と6桁 - ショートノーツとロングノーツ</h3>
+<p>一つ前の項目で説明したとおり、6桁目にはロングレーン識別番号を指定します。
+つまり、6桁の構文はロングノーツ専用の構文となります。</p>
+<p>ショートノーツレーン(種別が1,5)は5桁、ロングノーツレーン(種別が2,3,4)は6桁だという事を覚えておきましょう。</p>
               
             </div>
           </div>
@@ -109,7 +261,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../diff/" class="btn btn-neutral" title="Seaurchinとの違い"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -135,7 +287,7 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../diff/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>
