@@ -1,6 +1,7 @@
 # sus-analyzer
 [![Build Status](https://travis-ci.org/KawakawaRitsuki/sus-analyzer.svg?branch=master)](https://travis-ci.org/KawakawaRitsuki/sus-analyzer)
 [![Documentation Status](https://readthedocs.org/projects/sus-analyzer/badge/?version=latest)](https://sus-analyzer.readthedocs.io/ja/latest/?badge=latest)
+[![Coverage Status](https://coveralls.io/repos/github/KawakawaRitsuki/sus-analyzer/badge.svg?branch=develop)](https://coveralls.io/github/KawakawaRitsuki/sus-analyzer?branch=develop)
 [![npm](https://img.shields.io/npm/v/sus-analyzer.svg)](https://www.npmjs.com/package/sus-analyzer)
 ![sus:v2.17.0](https://img.shields.io/badge/sus-v2.17.0-blue.svg)
 

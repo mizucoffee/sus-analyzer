@@ -8,7 +8,7 @@
   "description": "SeaUrchinScore Analyzer",
   "private": false,
   "scripts": {
-     "test": "nyc --reporter=html --reporter=text ava",
+     "test": "nyc ava",
      "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
