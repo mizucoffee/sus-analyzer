@@ -9,8 +9,18 @@ const difficultys = {
 const support_meta  = [ "SONGID", "TITLE", "ARTIST", "DESIGNER", "DIFFICULTY", "PLAYLEVEL", "WAVE", "WAVEOFFSET", "JACKET", "BACKGROUND", "MOVIE", "MOVIEOFFSET", "BASEBPM" ]
 const required_meta = [ "SONGID", "TITLE", "ARTIST", "DESIGNER", "DIFFICULTY", "PLAYLEVEL" ]
 
+/**
+ * メタデータのオブジェクトを返す関数
+ * @param {String} sus - sus
+ * @return メタデータのオブジェクト
+ */
 const getMeta = sus => susToMetaArray(sus).reduce((p,c) => { p[c[0]] = c[1]; return p},{})
 
+/**
+ * sus譜面が有効かどうかを返す関数
+ * @param {String} sus - sus
+ * @return 有効かどうかの真偽値
+ */
 const validate = sus => {
   const meta = getMeta(sus)
 
@@ -23,6 +33,11 @@ const validate = sus => {
   return { VALIDITY: missing_meta.length === 0, MISSING_META: missing_meta }
 }
 
+/**
+ * susのメタデータを配列に変換する関数
+ * @param {String} sus - sus
+ * @return メタデータの配列
+ */
 const susToMetaArray = sus => {
   return sus.split('\n')
     .filter(line => line.slice(0,1) === "#")    // sus有効行
