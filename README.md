@@ -1,9 +1,13 @@
 # sus-analyzer
 [![Build Status](https://travis-ci.org/mizucoffee/sus-analyzer.svg?branch=master)](https://travis-ci.org/mizucoffee/sus-analyzer)
-[![Documents](https://img.shields.io/badge/docs-sus_analyzer-orange.svg)](https://mizucoffee.github.io/sus-analyzer/)
+[![dependencies Status](https://david-dm.org/mizucoffee/sus-analyzer/status.svg)](https://david-dm.org/mizucoffee/sus-analyzer)
 [![Coverage Status](https://coveralls.io/repos/github/mizucoffee/sus-analyzer/badge.svg?branch=develop)](https://coveralls.io/github/mizucoffee/sus-analyzer?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/fc596d01b6038852e18d/maintainability)](https://codeclimate.com/github/mizucoffee/sus-analyzer/maintainability)
+[![Inline docs](http://inch-ci.org/github/mizucoffee/sus-analyzer.svg?branch=master)](http://inch-ci.org/github/mizucoffee/sus-analyzer)
+[![Documents](https://img.shields.io/badge/docs-sus_analyzer-orange.svg)](https://mizucoffee.github.io/sus-analyzer/)
 [![npm](https://img.shields.io/npm/v/sus-analyzer.svg)](https://www.npmjs.com/package/sus-analyzer)
 ![sus:v2.17.0](https://img.shields.io/badge/sus-v2.17.0-blue.svg)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://kawakawaritsuki.mit-license.org/)
 
 SeaUrchinScore Analyzer for node
 
