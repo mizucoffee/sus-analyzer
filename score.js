@@ -18,7 +18,7 @@ function getBPMs(validLines, measure, basebpm) {
   const bpmDef = validLines
     .filter(line => line.match(/^\d{3}08/))
     .reduce((list, line) => {
-      list[Number(line.slice(0,3))] = bpmList[Number(line.split(' ')[1].trim())] || basebpm ||120
+      list[Number(line.slice(0,3))] = bpmList[Number(line.split(':')[1].trim())] || basebpm ||120
       return list
     },[])
 
