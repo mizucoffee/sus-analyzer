@@ -123,6 +123,8 @@ function analyze(sus) {
                   delete longs[note.lane_type][lane][note.defnum]
                   break
                 case 3:
+                case 4:
+                case 5:
                   if(!longs[note.lane_type].hasOwnProperty(lane) || !longs[note.lane_type][lane].hasOwnProperty(note.defnum)) break
                   longs[note.lane_type][lane][note.defnum].notes.push(note)
                   break

@@ -1,6 +1,6 @@
 {
   "name": "sus-analyzer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "index.js",
   "repository": "https://github.com/KawakawaRitsuki/sus-analyze.git",
   "author": "Ritsuki Goto <develop@mizucoffee.net>",
@@ -8,8 +8,8 @@
   "description": "SeaUrchinScore Analyzer",
   "private": false,
   "scripts": {
-     "test": "nyc ava",
-     "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "nyc ava",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
     "ava": "^0.25.0",
