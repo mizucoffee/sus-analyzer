@@ -15,6 +15,6 @@ ava('Short Note Type', t => t.is(score.shortNotes[8].note_type    , 2))
 ava('Short Position',  t => t.is(score.shortNotes[8].position     , 0))
 ava('Short Width',     t => t.is(score.shortNotes[8].width        , 4))
 
-ava('Default BPM1',    t => t.is(SusAnalyzer.getData("#BPM01: 100\n#00308 01\n#00510:00").BPMs[0]  , 120))
-ava('Default BPM2',    t => t.is(SusAnalyzer.getData("#00308 01\n#00510:00").BPMs[0]  , 120))
+ava('Default BPM1',    t => t.is(SusAnalyzer.getData("#BPM01: 100\n#00308: 01\n#00510:00").BPMs[0]  , 120))
+ava('Default BPM2',    t => t.is(SusAnalyzer.getData("#00308: 01\n#00510:00").BPMs[0]  , 120))
 ava('Default BEATs',   t => t.is(SusAnalyzer.getData("").BEATs[0] , 4))
