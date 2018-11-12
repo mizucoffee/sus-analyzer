@@ -104,13 +104,12 @@ function analyze(sus) {
     },[])
     .reduce((list, measure, index) => {
       measure.forEach((notesPerTick,i) => {
-        [[2],[3,4,5],[1]].forEach(type => {
+        [[2],[1],[3,4,5]].forEach(type => {
           notesPerTick
             .filter(note => type.includes(note.note_type))
             .forEach(note => {
               const lane = note.lane_type == 2 ? note.lane : 0
               switch (note.note_type) {
-                  //TODO: 無い時の処理（= d.type == 1が未処理）
                 case 1:
                   if(!longs[note.lane_type].hasOwnProperty(lane)) longs[note.lane_type][lane] = {}
                   longs[note.lane_type][lane][note.defnum] = {type: note.lane_type, notes: []}
