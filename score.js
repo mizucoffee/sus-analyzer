@@ -92,7 +92,7 @@ function analyze(sus) {
         .map((note, i) => `${line.data[i*2]}${line.data[i*2+1]}`)
         .map((note, i) => ({ pos: 192 * data.BEATs[line.measure] / (line.data.length / 2) * i, type: parseInt(note[0], 36), width: parseInt(note[1], 17) }))
         .filter(note => note.width !== 0)
-        .map(note => ({ measure: line.measure, lane_type: line.lane_type, lane: line.lane, defnum: line.defnum, note_type: note.type, position: note.pos, width: note.width}))
+        .map(note => ({ measure: line.measure, lane_type: line.lane_type, lane: line.lane, defnum: line.defnum, note_type: note.type, position: Math.round(note.pos), width: note.width}))
         .forEach(e => list.push(e))
       return list
     },[])
