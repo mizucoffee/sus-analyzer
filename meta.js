@@ -52,13 +52,11 @@ const susToMetaArray = sus => {
       switch(line[0]) {
         case "DIFFICULTY":
           line[1] = {}
-          line[1].LEVEL = Number.isFinite(Number(data.slice(0,1))) ? Number(data.slice(0,1)) : 4
+          line[1].LEVEL = Number.isFinite(Number(data.slice(0,1))) ? Number(data.slice(0,1)) : -1
           if(0 > line[1].LEVEL || line[1].LEVEL > 4) return null
           line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
           if(line[1].LEVEL !== 4) break
-          line[1].MARK = !Number.isFinite(Number(data.slice(0,1))) ? data.slice(0,1) : data.length !== 1 ? data.slice(data.length-1) : null
-          if(data.length === 1) break
-          line[1].STAR = data.slice(1).split("☆").length - 1
+          line[1].MARK = data.length !== 1 ? `${data}:`.split(':')[1] || null : null
           break
         case "WAVEOFFSET":
         case "MOVIEOFFSET":

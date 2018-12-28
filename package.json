@@ -17,7 +17,5 @@
     "istanbul": "^0.4.5",
     "nyc": "^13.1.0"
   },
-  "dependencies": {
-    "canvas": "^2.0.1"
-  }
+  "dependencies": {}
 }
