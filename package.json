@@ -7,6 +7,9 @@
   "license": "MIT",
   "description": "SeaUrchinScore Analyzer",
   "private": false,
+  "engines": {
+    "node": ">=8.3.0"
+  },
   "scripts": {
     "test": "nyc ava",
     "coverage": "nyc report --reporter=text-lcov | coveralls"

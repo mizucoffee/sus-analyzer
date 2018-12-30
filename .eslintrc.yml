@@ -16,4 +16,4 @@ rules:
     semi: false
   node/no-unsupported-features:
   - error
-  - version: 8
+  - version: 8.3.0
