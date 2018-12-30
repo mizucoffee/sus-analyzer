@@ -1,7 +1,5 @@
 {
   "files": {
-    "included": [
-      "./*.js"
-    ]
+    "included": ["./*.js"]
   }
 }

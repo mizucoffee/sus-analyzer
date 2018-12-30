@@ -1,0 +1,19 @@
+env:
+  es6: true
+  node: true
+plugins:
+  - node
+  - prettier
+extends:
+  - eslint:recommended
+  - plugin:node/recommended
+  - plugin:prettier/recommended
+rules:
+  prettier/prettier:
+  - error
+  - singleQuote: true
+    trailingComma: es5
+    semi: false
+  node/no-unsupported-features:
+  - error
+  - version: 8
