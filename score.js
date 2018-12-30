@@ -56,6 +56,45 @@ function getBEATs(validLines, measure) {
   }, [])
 }
 
+function getNotes(validLines, tpb, beats) {
+  return validLines
+    .filter(line =>
+      line.match(
+        /^\d{3}[1-5][0-9a-fA-F][0-9a-zA-Z]?:(\s*[0-9a-zA-Z][0-9a-gA-G])+\s*$/
+      )
+    )
+    .map(line => line.split(':', 2))
+    .map(line => {
+      const data = {
+        measure: Number(line[0].slice(0, 3)),
+        lane_type: Number(line[0].slice(3, 4)),
+        lane: parseInt(line[0].slice(4, 5), 16),
+        data: line[1].trim().replace(/ /g, ''),
+      }
+      if (line[0].length === 6) data.channel = line[0].slice(5, 6)
+      return data
+    })
+    .reduce((list, line) => {
+      ;[...Array(line.data.length / 2)]
+        .map((note, i) => `${line.data[i * 2]}${line.data[i * 2 + 1]}`)
+        .map((note, i) => ({
+          ...line,
+          tick: Math.round(
+            ((tpb * beats[line.measure]) / (line.data.length / 2)) * i
+          ),
+          note_type: parseInt(note[0], 36),
+          width: parseInt(note[1], 17),
+        }))
+        .filter(note => note.width !== 0)
+        .map(note => {
+          delete note.data
+          return note
+        })
+        .forEach(e => list.push(e))
+      return list
+    }, [])
+}
+
 /**
  * ノーツからロングオブジェクトに変換する関数
  * @param {Object} notes - ノーツ配列
@@ -132,51 +171,13 @@ function analyze(sus, tickPerBeat = 192) {
   score.BPMs = getBPMs(validLines, score.measure, meta.getMeta(sus).BASEBPM)
   score.BEATs = getBEATs(validLines, score.measure)
 
-  const notes = validLines
-    .filter(line =>
-      line.match(
-        /^\d{3}[1-5][0-9a-fA-F][0-9a-zA-Z]?:(\s*[0-9a-zA-Z][0-9a-gA-G])+\s*$/
-      )
-    )
-    .map(line => line.split(':', 2))
-    .map(line => {
-      const data = {
-        measure: Number(line[0].slice(0, 3)),
-        lane_type: Number(line[0].slice(3, 4)),
-        lane: parseInt(line[0].slice(4, 5), 16),
-        data: line[1].trim().replace(/ /g, ''),
-      }
-      if (line[0].length === 6) data.channel = line[0].slice(5, 6)
-      return data
-    })
-    .reduce((list, line) => {
-      ;[...Array(line.data.length / 2)]
-        .map((note, i) => `${line.data[i * 2]}${line.data[i * 2 + 1]}`)
-        .map((note, i) => ({
-          ...line,
-          tick: Math.round(
-            ((tickPerBeat * score.BEATs[line.measure]) /
-              (line.data.length / 2)) *
-              i
-          ),
-          note_type: parseInt(note[0], 36),
-          width: parseInt(note[1], 17),
-        }))
-        .filter(note => note.width !== 0)
-        .map(note => {
-          delete note.data
-          return note
-        })
-        .forEach(e => list.push(e))
-      return list
-    }, [])
+  const notes = getNotes(validLines, tickPerBeat, score.BEATs)
 
   score.shortNotes = notes.filter(note => note.lane_type === 1)
-  score.airNotes = notes.filter(note => note.lane_type === 5)
-
   score.holdNotes = getLongLane(notes, 2)
   score.slideNotes = getLongLane(notes, 3)
   score.airActionNotes = getLongLane(notes, 4)
+  score.airNotes = notes.filter(note => note.lane_type === 5)
 
   return score
 }

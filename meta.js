@@ -65,6 +65,42 @@ const validate = sus => {
  * @return メタデータの配列
  */
 const susToMetaArray = sus => {
+  return getValidMetaLines(sus)
+    .map(line => {
+      let data = line[1]
+      if (line[0] === 'DIFFICULTY') {
+        line[1] = { LEVEL: Number(data.slice(0, 1)) }
+        if (
+          !Number.isFinite(line[1].LEVEL) ||
+          0 > line[1].LEVEL ||
+          line[1].LEVEL > 4
+        )
+          return null
+        line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
+        if (line[1].LEVEL === 4)
+          line[1].MARK =
+            data.length !== 1 ? `${data}:`.split(':')[1] || null : null
+      }
+      if (['WAVEOFFSET', 'MOVIEOFFSET', 'BASEBPM'].includes(line[0])) {
+        if (!Number.isFinite(Number(line[1]))) return null
+        else line[1] = Number(line[1])
+      }
+      if (line[0] === 'PLAYLEVEL') {
+        line[1] = {}
+        if (data.slice(-1) === '+') {
+          line[1].PLUS = 1
+          data = data.slice(0, -1)
+        }
+        if (!Number.isFinite(Number(data))) return null
+        line[1].LEVEL = Number(data)
+        line[1].TEXT = `${line[1].LEVEL}${line[1].PLUS ? '+' : ''}`
+      }
+      return line
+    })
+    .filter(line => line)
+}
+
+function getValidMetaLines(sus) {
   return sus
     .split('\n')
     .filter(line => line.slice(0, 1) === '#') // sus有効行
@@ -77,7 +113,7 @@ const susToMetaArray = sus => {
         .toUpperCase(),
       line.slice(line.indexOf(' ') + 1, line.length).trim(),
     ])
-    .filter(line => support_meta.indexOf(line[0]) >= 0) // 非対応メタデータ除外
+    .filter(line => support_meta.includes(line[0])) // 非対応メタデータ除外
     .map(line => {
       if (
         line[1].slice(0, 1) == '"' &&
@@ -87,40 +123,6 @@ const susToMetaArray = sus => {
       return line
     }) // 文字列リテラルの
     .filter(line => line[1])
-    .map(line => {
-      let data = line[1]
-      switch (line[0]) {
-        case 'DIFFICULTY':
-          line[1] = {}
-          line[1].LEVEL = Number.isFinite(Number(data.slice(0, 1)))
-            ? Number(data.slice(0, 1))
-            : -1
-          if (0 > line[1].LEVEL || line[1].LEVEL > 4) return null
-          line[1] = Object.assign(line[1], difficultys[line[1].LEVEL])
-          if (line[1].LEVEL !== 4) break
-          line[1].MARK =
-            data.length !== 1 ? `${data}:`.split(':')[1] || null : null
-          break
-        case 'WAVEOFFSET':
-        case 'MOVIEOFFSET':
-        case 'BASEBPM':
-          if (!Number.isFinite(Number(line[1]))) return null
-          line[1] = Number(line[1])
-          break
-        case 'PLAYLEVEL':
-          line[1] = {}
-          if (data.slice(-1) === '+') {
-            line[1].PLUS = 1
-            data = data.slice(0, -1)
-          }
-          if (!Number.isFinite(Number(data))) return null
-          line[1].LEVEL = Number(data)
-          line[1].TEXT = `${line[1].LEVEL}${line[1].PLUS ? '+' : ''}`
-          break
-      }
-      return line
-    })
-    .filter(line => line)
 }
 
 module.exports = {
