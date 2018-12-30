@@ -122,12 +122,10 @@ function getLongLane(notes, type) {
                 if (
                   !longs.hasOwnProperty(lane) ||
                   !longs[lane].hasOwnProperty(note.defnum)
-                ) {
+                )
                   return
-                }
-                if ([3, 4, 5].includes(note.note_type)) {
+                if ([3, 4, 5].includes(note.note_type))
                   longs[lane][note.defnum].notes.push(note)
-                }
                 if (2 == note.note_type) {
                   longs[lane][note.defnum].notes.push(note)
                   list.push(longs[lane][note.defnum])
@@ -156,11 +154,12 @@ function getLongLane(notes, type) {
  * @return { measure: <小節数>, BPMs: [<BPMの配列>], BEATs: [拍数の配列], shortNotes: [{ measure: <小節番号>, lane_type: <レーン種別>, lane: <レーン番号>, note_type: <ノーツ種別>, position: <小節内のTick>, width: <ノーツ幅>}], longNotes: [{type: <レーン種別>, notes: [ measure: <小節番号>, lane_type: <レーン種別>, lane: <レーン番号>, defnum: <識別番号>, note_type: ノーツ種別, position: <小節内のTick>, width: <ノーツ幅> ]}]}
  */
 function analyze(sus, tickPerBeat = 192) {
+  const score = {}
+
   const validLines = sus
     .split('\n')
     .filter(line => line.slice(0, 1) === '#')
     .map(line => line.slice(1))
-  const score = {}
 
   score.measure =
     validLines
