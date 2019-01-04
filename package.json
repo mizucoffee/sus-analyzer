@@ -2,6 +2,7 @@
   "name": "sus-analyzer",
   "version": "2.1.0",
   "main": "index.js",
+  "types": "./typings/index.d.ts",
   "repository": "https://github.com/mizucoffee/sus-analyze.git",
   "author": "Ritsuki Goto <develop@mizucoffee.net>",
   "license": "MIT",

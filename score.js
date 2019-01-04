@@ -71,7 +71,7 @@ function getNotes(validLines, tpb, beats) {
         lane: parseInt(line[0].slice(4, 5), 16),
         data: line[1].trim().replace(/ /g, ''),
       }
-      if (line[0].length === 6) data.channel = line[0].slice(5, 6)
+      if (line[0].length === 6) data.channel = line[0].slice(5, 6).toUpperCase()
       return data
     })
     .reduce((list, line) => {
@@ -125,20 +125,17 @@ function getLongLane(notes, type) {
                 )
                   return
                 if ([3, 4, 5].includes(note.note_type))
-                  longs[lane][note.defnum].notes.push(note)
+                  longs[lane][note.defnum].push(note)
                 if (2 == note.note_type) {
-                  longs[lane][note.defnum].notes.push(note)
+                  longs[lane][note.defnum].push(note)
                   list.push(longs[lane][note.defnum])
                   delete longs[lane][note.defnum]
                 }
               }
               if (1 == note.note_type) {
                 longs[lane] = {}
-                longs[lane][note.defnum] = {
-                  type: note.lane_type,
-                  notes: [],
-                }
-                longs[lane][note.defnum].notes.push(note)
+                longs[lane][note.defnum] = []
+                longs[lane][note.defnum].push(note)
               }
             })
         })
