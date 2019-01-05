@@ -29,11 +29,11 @@ $ npm i sus-analyzer
 
 ### JavaScript
 
-```
+```js
 const SusAnalyzer = require('sus-analyzer')
 const fs = require('fs')
 
-const sus = fs.readFileSync('example.sus','utf8')
+const sus = fs.readFileSync('example.sus', 'utf8')
 const sus_validate = SusAnalyzer.validate(sus)
 const sus_meta = SusAnalyzer.getMeta(sus)
 const sus_data = SusAnalyzer.getScore(sus)
@@ -45,7 +45,7 @@ console.log(sus_data)
 
 ### TypeScript
 
-```
+```ts
 import * as fs from 'fs'
 import * as SusAnalyzer from './dist/index.js'
 
