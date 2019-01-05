@@ -48,7 +48,7 @@ function getBPMs(
     .reduce(
       (list, line) => {
         list[Number(line.slice(0, 3))] =
-          bpmList[Number(line.split(':')[1].trim())] || basebpm || 120
+          bpmList[Number(line.split(':')[1].trim())] || basebpm
         return list
       },
       [] as number[]
@@ -189,13 +189,11 @@ function getLongLane(notes: ISusNotes[], laneType: number): ISusNotes[][] {
             .filter(note => note.noteType === 1)
             .forEach(note => {
               const lane = laneType === 2 ? note.lane : 0
-              if (note.channel == null) {
-                return
+              if (note.channel != null) {
+                longs[lane] = longs[lane] || []
+                longs[lane][note.channel] = []
+                longs[lane][note.channel].push(note)
               }
-
-              longs[lane] = longs[lane] || []
-              longs[lane][note.channel] = []
-              longs[lane][note.channel].push(note)
             })
           notesPerTick
             .filter(note => [3, 4, 5].indexOf(note.noteType) > -1)

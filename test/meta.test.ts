@@ -25,6 +25,10 @@ test('getMeta().DIFFICULTY SPECIAL', () => {
     expect(noMark.DIFFICULTY.LEVEL).toBe(4)
     expect(noMark.DIFFICULTY.MARK).toBe('')
   }
+  expect(SusAnalyzer.getMeta('#DIFFICULTY N').DIFFICULTY).toBeUndefined()
+  expect(SusAnalyzer.getMeta('#DIFFICULTY 5').DIFFICULTY).toBeUndefined()
+  expect(SusAnalyzer.getMeta('#DIFFICULTY 4').DIFFICULTY).toBeDefined()
+  expect(SusAnalyzer.getMeta('#DIFFICULTY 3').DIFFICULTY).toBeDefined()
 })
 test('getMeta().PLAYLEVEL', () => {
   expect(metas.PLAYLEVEL).toBeDefined()
@@ -42,17 +46,25 @@ test('getMeta().PLAYLEVEL SPECIAL', () => {
     expect(plus.PLAYLEVEL.TEXT).toBe('12+')
     expect(plus.PLAYLEVEL.PLUS).toBe(true)
   }
-  const undef = SusAnalyzer.getMeta('#PLAYLEVEL NaN')
-  expect(undef.PLAYLEVEL).toBeUndefined()
+  expect(SusAnalyzer.getMeta('#PLAYLEVEL NaN').PLAYLEVEL).toBeUndefined()
 })
 
 test('getMeta().WAVE', () => expect(metas.WAVE).toBe('filename.wav'))
-test('getMeta().WAVEOFFSET', () => expect(metas.WAVEOFFSET).toBe(-0.01))
+test('getMeta().WAVEOFFSET', () => {
+  expect(metas.WAVEOFFSET).toBe(-0.01)
+  expect(SusAnalyzer.getMeta('#WAVEOFFSET N').WAVEOFFSET).toBeUndefined()
+})
 test('getMeta().JACKET', () => expect(metas.JACKET).toBe('jacket.jpg'))
 test('getMeta().BACKGROUND', () => expect(metas.BACKGROUND).toBe('image.jpg'))
 test('getMeta().MOVIE', () => expect(metas.MOVIE).toBe('movie.mp4'))
-test('getMeta().MOVIEOFFSET', () => expect(metas.MOVIEOFFSET).toBe(0.01))
-test('getMeta().BASEBPM', () => expect(metas.BASEBPM).toBe(120))
+test('getMeta().MOVIEOFFSET', () => {
+  expect(metas.MOVIEOFFSET).toBe(0.01)
+  expect(SusAnalyzer.getMeta('#MOVIEOFFSET N').MOVIEOFFSET).toBeUndefined()
+})
+test('getMeta().BASEBPM', () => {
+  expect(metas.BASEBPM).toBe(120)
+  expect(SusAnalyzer.getMeta('#BASEBPM N').BASEBPM).toBeUndefined()
+})
 test('validity().VALIDITY', () => {
   expect(SusAnalyzer.validate(sus).VALIDITY).toBe(true)
 

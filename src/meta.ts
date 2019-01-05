@@ -104,8 +104,7 @@ export function getMeta(sus: string): ISusMeta {
             TEXT: difficultys[difLevel].TEXT
           }
           if (data.LEVEL === 4) {
-            data.MARK =
-              line[1].length !== 1 ? `${line[1]}:`.split(':')[1] || '' : ''
+            data.MARK = line[1].length !== 1 ? `${line[1]}:`.split(':')[1] : ''
           }
           obj.DIFFICULTY = data
           break

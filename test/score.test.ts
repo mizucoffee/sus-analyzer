@@ -8,6 +8,7 @@ test('getScore().measure', () => expect(score.measure).toBe(23))
 test('getScore().BPMs', () => {
   expect(score.BPMs[1]).toBe(120)
   expect(score.BPMs[2]).toBe(80)
+  expect(SusAnalyzer.getScore('').BPMs[0]).toBe(120)
 })
 test('getScore().BEATs', () => {
   expect(score.BEATs[2]).toBe(4)
@@ -17,8 +18,8 @@ test('getScore().shortNotes[]', () => {
   const short = score.shortNotes[8]
   expect(short.measure).toBe(1)
   expect(short.laneType).toBe(1)
-  expect(short.lane).toBe(4)
-  expect(short.noteType).toBe(2)
+  expect(short.lane).toBe(8)
+  expect(short.noteType).toBe(3)
   expect(short.tick).toBe(0)
   expect(short.width).toBe(4)
   expect(short.channel).toBeUndefined()
@@ -62,4 +63,10 @@ test('getScore().airNotes[]', () => {
   expect(air.tick).toBe(0)
   expect(air.width).toBe(4)
   expect(air.channel).toBeUndefined()
+})
+test('SPECIAL', () => {
+  expect(SusAnalyzer.getScore('#00030A: 00002400').slideNotes.length).toBe(0)
+  expect(SusAnalyzer.getScore('#00030A: 00003400').slideNotes.length).toBe(0)
+  expect(SusAnalyzer.getScore('#00308: 1').slideNotes.length).toBe(0)
+  expect(SusAnalyzer.getScore('#00030: 00142400').slideNotes.length).toBe(0)
 })

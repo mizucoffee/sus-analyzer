@@ -1,6 +1,6 @@
 {
   "name": "sus-analyzer",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/mizucoffee/sus-analyze.git",
@@ -12,7 +12,7 @@
     "node": ">=8.3.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "coverage": "jest --coverage; cat ./coverage/lcov.info | coveralls",
     "build": "tsc"
   },
