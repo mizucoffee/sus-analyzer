@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Seaurchinとの違い - sus-analyzer</title>
+  <title>Meta - sus-analyzer</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -21,8 +21,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Seaurchin\u3068\u306e\u9055\u3044";
-    var mkdocs_page_input_path = "diff.md";
+    var mkdocs_page_name = "Meta";
+    var mkdocs_page_input_path = "meta.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -57,30 +57,29 @@
     <a class="" href="..">Home</a>
 	    </li>
           
+            <li class="toctree-l1">
+		
+    <a class="" href="../diff/">Seaurchinとの違い</a>
+	    </li>
+          
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">Seaurchinとの違い</a>
+    <a class="current" href="./">Meta</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#seaurchin">Seaurchinとの違い</a></li>
+    <li class="toctree-l2"><a href="#functions">Functions</a></li>
     
-        <ul>
-        
-            <li><a class="toctree-l3" href="#playlevel">PLAYLEVELの扱い</a></li>
-        
-            <li><a class="toctree-l3" href="#hispeed">HISPEED関連構文</a></li>
-        
-            <li><a class="toctree-l3" href="#request">REQUEST構文</a></li>
-        
-        </ul>
+
+    <li class="toctree-l2"><a href="#getmetasus-isusmeta">getMeta(sus) ⇒ ISusMeta</a></li>
+    
+
+    <li class="toctree-l2"><a href="#validatesus-isusvalidity">validate(sus) ⇒ ISusValidity</a></li>
+    
+
+    <li class="toctree-l2"><a href="#getvalidmetalinessus-arrayarraystring">getValidMetaLines(sus) ⇒ Array.&lt;Array.&lt;string&gt;&gt;</a></li>
     
 
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../meta/">Meta</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -120,7 +119,7 @@
     
       
     
-    <li>Seaurchinとの違い</li>
+    <li>Meta</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -130,26 +129,82 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="seaurchin">Seaurchinとの違い</h1>
-<p><strong>基本的には</strong><a href="https://seaurchin.kb10uy.org/wiki/score/format">Susフォーマット - Seaurchin Wiki</a>に準拠しています。</p>
-<p>出来る限り互換性を保つようにしていますが、一部の仕様が異なります。</p>
-<h2 id="playlevel">PLAYLEVELの扱い</h2>
-<p>Seaurchinでは、PLAYLEVELは<strong>整数</strong>、及び<strong>+記号</strong>のみの対応となっていますが、sus-analyzerではそれら2つに加えて、<strong>小数点</strong>に対応しています。
-これにより、譜面定数の定義が可能となります。
-また、+記号の扱いは下記の通りとなります。</p>
-<ul>
-<li>1.0~1.6 = 1 =&gt; 1.0</li>
-<li>1.7~1.9 = 1+ =&gt; 1.7</li>
-</ul>
-<h2 id="hispeed">HISPEED関連構文</h2>
-<p>v1.3.4現在、HISPEED関連構文には対応していません。
-理由としては、sus-analyzerはそもそもメタ情報解析、及び画像生成の為に作っており、実際に再生する事を想定していなかったからです。</p>
-<p>ただ、susプレイヤーもいつか作りたいと考えているので、その時には実装します。</p>
-<h2 id="request">REQUEST構文</h2>
-<p>v1.3.4現在、REQUEST構文には対応していません。
-HISPEED関連構文と同じく、画像生成には不要だった為です。</p>
-<p>REQUEST構文はプレイヤー毎に機能をつける時に良さそうだなと考えています。
-プレイヤーを作る時には実装します。</p>
+                <h2 id="functions">Functions</h2>
+<dl>
+<dt><a href="#getMeta">getMeta(sus)</a> ⇒ <code>ISusMeta</code></dt>
+<dd><p>メタデータのオブジェクトを返す関数</p>
+</dd>
+<dt><a href="#validate">validate(sus)</a> ⇒ <code>ISusValidity</code></dt>
+<dd><p>sus譜面が有効かどうかを返す関数</p>
+</dd>
+<dt><a href="#getValidMetaLines">getValidMetaLines(sus)</a> ⇒ <code>Array.&lt;Array.&lt;string&gt;&gt;</code></dt>
+<dd><p>sus文字列から有効行を配列で返す関数</p>
+</dd>
+</dl>
+
+<p><a name="getMeta"></a></p>
+<h2 id="getmetasus-isusmeta">getMeta(sus) ⇒ <code>ISusMeta</code></h2>
+<p>メタデータのオブジェクトを返す関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>ISusMeta</code> - メタデータ  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sus</td>
+<td><code>String</code></td>
+<td>sus</td>
+</tr>
+</tbody>
+</table>
+<p><a name="validate"></a></p>
+<h2 id="validatesus-isusvalidity">validate(sus) ⇒ <code>ISusValidity</code></h2>
+<p>sus譜面が有効かどうかを返す関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>ISusValidity</code> - 結果  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sus</td>
+<td><code>String</code></td>
+<td>sus</td>
+</tr>
+</tbody>
+</table>
+<p><a name="getValidMetaLines"></a></p>
+<h2 id="getvalidmetalinessus-arrayarraystring">getValidMetaLines(sus) ⇒ <code>Array.&lt;Array.&lt;string&gt;&gt;</code></h2>
+<p>sus文字列から有効行を配列で返す関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>Array.&lt;Array.&lt;string&gt;&gt;</code> - sus有効行の配列  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sus</td>
+<td><code>String</code></td>
+<td>sus</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div>
@@ -157,10 +212,10 @@ HISPEED関連構文と同じく、画像生成には不要だった為です。<
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../meta/" class="btn btn-neutral float-right" title="Meta">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../score/" class="btn btn-neutral float-right" title="Score">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../diff/" class="btn btn-neutral" title="Seaurchinとの違い"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -186,10 +241,10 @@ HISPEED関連構文と同じく、画像生成には不要だった為です。<
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../diff/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../meta/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../score/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

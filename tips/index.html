@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Seaurchinとの違い - sus-analyzer</title>
+  <title>豆知識 - sus-analyzer</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -21,8 +21,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Seaurchin\u3068\u306e\u9055\u3044";
-    var mkdocs_page_input_path = "diff.md";
+    var mkdocs_page_name = "\u8c46\u77e5\u8b58";
+    var mkdocs_page_input_path = "tips.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -57,25 +57,9 @@
     <a class="" href="..">Home</a>
 	    </li>
           
-            <li class="toctree-l1 current">
+            <li class="toctree-l1">
 		
-    <a class="current" href="./">Seaurchinとの違い</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l2"><a href="#seaurchin">Seaurchinとの違い</a></li>
-    
-        <ul>
-        
-            <li><a class="toctree-l3" href="#playlevel">PLAYLEVELの扱い</a></li>
-        
-            <li><a class="toctree-l3" href="#hispeed">HISPEED関連構文</a></li>
-        
-            <li><a class="toctree-l3" href="#request">REQUEST構文</a></li>
-        
-        </ul>
-    
-
-    </ul>
+    <a class="" href="../diff/">Seaurchinとの違い</a>
 	    </li>
           
             <li class="toctree-l1">
@@ -93,9 +77,23 @@
     <a class="" href="../sus/">sus形式</a>
 	    </li>
           
-            <li class="toctree-l1">
+            <li class="toctree-l1 current">
 		
-    <a class="" href="../tips/">豆知識</a>
+    <a class="current" href="./">豆知識</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#_1">豆知識</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#nbpmbeat">n小節目のBPM/BEATが知りたい</a></li>
+        
+            <li><a class="toctree-l3" href="#sus">susの解析/走査について</a></li>
+        
+        </ul>
+    
+
+    </ul>
 	    </li>
           
         </ul>
@@ -120,7 +118,7 @@
     
       
     
-    <li>Seaurchinとの違い</li>
+    <li>豆知識</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -130,26 +128,24 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="seaurchin">Seaurchinとの違い</h1>
-<p><strong>基本的には</strong><a href="https://seaurchin.kb10uy.org/wiki/score/format">Susフォーマット - Seaurchin Wiki</a>に準拠しています。</p>
-<p>出来る限り互換性を保つようにしていますが、一部の仕様が異なります。</p>
-<h2 id="playlevel">PLAYLEVELの扱い</h2>
-<p>Seaurchinでは、PLAYLEVELは<strong>整数</strong>、及び<strong>+記号</strong>のみの対応となっていますが、sus-analyzerではそれら2つに加えて、<strong>小数点</strong>に対応しています。
-これにより、譜面定数の定義が可能となります。
-また、+記号の扱いは下記の通りとなります。</p>
-<ul>
-<li>1.0~1.6 = 1 =&gt; 1.0</li>
-<li>1.7~1.9 = 1+ =&gt; 1.7</li>
-</ul>
-<h2 id="hispeed">HISPEED関連構文</h2>
-<p>v1.3.4現在、HISPEED関連構文には対応していません。
-理由としては、sus-analyzerはそもそもメタ情報解析、及び画像生成の為に作っており、実際に再生する事を想定していなかったからです。</p>
-<p>ただ、susプレイヤーもいつか作りたいと考えているので、その時には実装します。</p>
-<h2 id="request">REQUEST構文</h2>
-<p>v1.3.4現在、REQUEST構文には対応していません。
-HISPEED関連構文と同じく、画像生成には不要だった為です。</p>
-<p>REQUEST構文はプレイヤー毎に機能をつける時に良さそうだなと考えています。
-プレイヤーを作る時には実装します。</p>
+                <h1 id="_1">豆知識</h1>
+<h2 id="nbpmbeat">n小節目のBPM/BEATが知りたい</h2>
+<p>sus-analyzerで取得したBPM/BEATを一度配列にし、その配列から該当する小節を取り出します。
+結果があればそのBPM/BEATを、結果が空なら小節数を1引いてもう一度取得。を繰り返すと取得できます。</p>
+<h2 id="sus">susの解析/走査について</h2>
+<p>本家の解析方法が文書化されていない為明確な差は分かりませんが、sus-analyzerの解析について書いておきます。参考になる事があれば幸いです。</p>
+<h3 id="_2">メタデータ</h3>
+<p>ファイルの上から順に1行づつ解析します。 <br />
+同じ項目が複数現れた場合、後者で上書きされます。</p>
+<h3 id="_3">ショートノーツ</h3>
+<p>ファイルの上から順に1行づつ解析します。 <br />
+ただただそれだけです。</p>
+<h3 id="_4">ロングノーツ</h3>
+<p>ノーツをtick毎に分け、ループを回します。</p>
+<p>該当1tick辺り3回処理をします。
+1. そのノーツが終了点である（最優先・controlをまとめてロングノーツを返す）
+2. そのノーツが中継点である（controlに入れてcontinue）
+3. そのノーツが開始点である（idを紐づけて配列に）</p>
               
             </div>
           </div>
@@ -157,10 +153,8 @@ HISPEED関連構文と同じく、画像生成には不要だった為です。<
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../meta/" class="btn btn-neutral float-right" title="Meta">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../sus/" class="btn btn-neutral" title="sus形式"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -186,10 +180,8 @@ HISPEED関連構文と同じく、画像生成には不要だった為です。<
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../sus/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../meta/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

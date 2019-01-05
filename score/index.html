@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Score - sus-analyzer</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="//fonts.googleapis.com/earlyaccess/notosansjp.css" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet">
+  <link href="../css/custom.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Score";
+    var mkdocs_page_input_path = "score.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> sus-analyzer</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../diff/">Seaurchinとの違い</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../meta/">Meta</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Score</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#functions">Functions</a></li>
+    
+
+    <li class="toctree-l2"><a href="#getbpmsvalidline-measure-basebpm-arraynumber">getBPMs(validLine, measure, [basebpm]) ⇒ Array.&lt;number&gt;</a></li>
+    
+
+    <li class="toctree-l2"><a href="#getbeatsvalidline-measure-arraynumber">getBEATs(validLine, measure) ⇒ Array.&lt;number&gt;</a></li>
+    
+
+    <li class="toctree-l2"><a href="#getnotesvalidline-tpb-beats-arrayisusmeta">getNotes(validLine, tpb, beats) ⇒ Array.&lt;ISusMeta&gt;</a></li>
+    
+
+    <li class="toctree-l2"><a href="#getlonglanenotes-lanetype-arrayarrayisusnotes">getLongLane(notes, laneType) ⇒ Array.&lt;Array.&lt;ISusNotes&gt;&gt;</a></li>
+    
+
+    <li class="toctree-l2"><a href="#getscoresus-tickperbeat-isusscore">getScore(sus, [tickPerBeat]) ⇒ ISusScore</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../sus/">sus形式</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tips/">豆知識</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">sus-analyzer</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Score</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="functions">Functions</h2>
+<dl>
+<dt><a href="#getBPMs">getBPMs(validLine, measure, [basebpm])</a> ⇒ <code>Array.&lt;number&gt;</code></dt>
+<dd><p>小節あたりのBPMを配列に変換する関数</p>
+</dd>
+<dt><a href="#getBEATs">getBEATs(validLine, measure)</a> ⇒ <code>Array.&lt;number&gt;</code></dt>
+<dd><p>小節あたりの拍数を配列に変換する関数</p>
+</dd>
+<dt><a href="#getNotes">getNotes(validLine, tpb, beats)</a> ⇒ <code>Array.&lt;ISusMeta&gt;</code></dt>
+<dd><p>sus有効行からノーツオブジェクトに変換する関数</p>
+</dd>
+<dt><a href="#getLongLane">getLongLane(notes, laneType)</a> ⇒ <code>Array.&lt;Array.&lt;ISusNotes&gt;&gt;</code></dt>
+<dd><p>ノーツからロングオブジェクトに変換する関数</p>
+</dd>
+<dt><a href="#getScore">getScore(sus, [tickPerBeat])</a> ⇒ <code>ISusScore</code></dt>
+<dd><p>susを解析する関数</p>
+</dd>
+</dl>
+
+<p><a name="getBPMs"></a></p>
+<h2 id="getbpmsvalidline-measure-basebpm-arraynumber">getBPMs(validLine, measure, [basebpm]) ⇒ <code>Array.&lt;number&gt;</code></h2>
+<p>小節あたりのBPMを配列に変換する関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>Array.&lt;number&gt;</code> - BPMs[&lt;小節番号&gt;] = 小節のBPM  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>validLine</td>
+<td><code>Array.&lt;string&gt;</code></td>
+<td></td>
+<td>sus有効行配列</td>
+</tr>
+<tr>
+<td>measure</td>
+<td><code>number</code></td>
+<td></td>
+<td>譜面小節数</td>
+</tr>
+<tr>
+<td>[basebpm]</td>
+<td><code>number</code></td>
+<td><code>120</code></td>
+<td>譜面BASEBPM</td>
+</tr>
+</tbody>
+</table>
+<p><a name="getBEATs"></a></p>
+<h2 id="getbeatsvalidline-measure-arraynumber">getBEATs(validLine, measure) ⇒ <code>Array.&lt;number&gt;</code></h2>
+<p>小節あたりの拍数を配列に変換する関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>Array.&lt;number&gt;</code> - BEATs[&lt;小節番号&gt;] = 小節の拍数  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>validLine</td>
+<td><code>Array.&lt;string&gt;</code></td>
+<td>sus有効行配列</td>
+</tr>
+<tr>
+<td>measure</td>
+<td><code>number</code></td>
+<td>譜面小節数</td>
+</tr>
+</tbody>
+</table>
+<p><a name="getNotes"></a></p>
+<h2 id="getnotesvalidline-tpb-beats-arrayisusmeta">getNotes(validLine, tpb, beats) ⇒ <code>Array.&lt;ISusMeta&gt;</code></h2>
+<p>sus有効行からノーツオブジェクトに変換する関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>Array.&lt;ISusMeta&gt;</code> - BEATs[&lt;小節番号&gt;] = 小節の拍数  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>validLine</td>
+<td><code>Array.&lt;string&gt;</code></td>
+<td>sus有効行配列</td>
+</tr>
+<tr>
+<td>tpb</td>
+<td><code>number</code></td>
+<td>Tick辺りの拍数</td>
+</tr>
+<tr>
+<td>beats</td>
+<td><code>Array.&lt;number&gt;</code></td>
+<td>拍数の配列</td>
+</tr>
+</tbody>
+</table>
+<p><a name="getLongLane"></a></p>
+<h2 id="getlonglanenotes-lanetype-arrayarrayisusnotes">getLongLane(notes, laneType) ⇒ <code>Array.&lt;Array.&lt;ISusNotes&gt;&gt;</code></h2>
+<p>ノーツからロングオブジェクトに変換する関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>Array.&lt;Array.&lt;ISusNotes&gt;&gt;</code> - ロングオブジェクトの配列  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>notes</td>
+<td><code>Array.&lt;ISusNotes&gt;</code></td>
+<td>ノーツ配列</td>
+</tr>
+<tr>
+<td>laneType</td>
+<td><code>number</code></td>
+<td>ロング種別</td>
+</tr>
+</tbody>
+</table>
+<p><a name="getScore"></a></p>
+<h2 id="getscoresus-tickperbeat-isusscore">getScore(sus, [tickPerBeat]) ⇒ <code>ISusScore</code></h2>
+<p>susを解析する関数</p>
+<p><strong>Kind</strong>: global function<br />
+<strong>Returns</strong>: <code>ISusScore</code> - 譜面  </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sus</td>
+<td><code>String</code></td>
+<td></td>
+<td>sus文字列</td>
+</tr>
+<tr>
+<td>[tickPerBeat]</td>
+<td><code>Number</code></td>
+<td><code>192</code></td>
+<td>TickPerBeat</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../sus/" class="btn btn-neutral float-right" title="sus形式">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../meta/" class="btn btn-neutral" title="Meta"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../meta/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../sus/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
