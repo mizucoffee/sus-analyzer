@@ -6,7 +6,6 @@
 <a href="https://coveralls.io/github/mizucoffee/sus-analyzer?branch=develop"><img src="https://coveralls.io/repos/github/mizucoffee/sus-analyzer/badge.svg?branch=develop" alt="Coverage Status" /></a>
 <a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square" alt="code style: prettier" /></a>
 <a href="https://codeclimate.com/github/mizucoffee/sus-analyzer/maintainability"><img src="https://api.codeclimate.com/v1/badges/fc596d01b6038852e18d/maintainability" alt="Maintainability" /></a>
-<a href="http://inch-ci.org/github/mizucoffee/sus-analyzer"><img src="http://inch-ci.org/github/mizucoffee/sus-analyzer.svg?branch=master" alt="Inline docs" /></a>
 <br>
 <a href="https://mizucoffee.github.io/sus-analyzer/"><img src="https://img.shields.io/badge/docs-sus_analyzer-orange.svg" alt="Documents" /></a>
 <a href="https://www.npmjs.com/package/sus-analyzer"><img src="https://img.shields.io/npm/v/sus-analyzer.svg" alt="npm" /></a>
@@ -72,4 +71,4 @@ console.log(susData)
 
 ## License
 
-[The MIT License](http://kawakawaritsuki.mit-license.org) (c) [@kawakawaritsuki](https://github.com/kawakawaritsuki)
+[The MIT License](http://kawakawaritsuki.mit-license.org) (c) [@mizucoffee](https://github.com/mizucoffee)
