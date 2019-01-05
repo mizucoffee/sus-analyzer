@@ -1,5 +1,5 @@
 {
   "hooks": {
-    "pre-commit": "npx eslint --fix *.js && npx prettier *.{md,json} --write && npm test && git add -A"
+    "pre-commit": "npx tslint --fix src/*.ts && npx prettier *.{md,json} --write && npm test && git add -A"
   }
 }
