@@ -23,15 +23,15 @@ export interface ISusScore {
 
 /**
  * 小節あたりのBPMを配列に変換する関数
- * @param {string[]} validLine - sus有効行
- * @param {number} measure - 譜面の小節数
- * @param {number} basebpm - 譜面のBASEBPM
- * @return 配列[小節番号] = BPM
+ * @param {string[]} validLine - sus有効行配列
+ * @param {number} measure - 譜面小節数
+ * @param {number} [basebpm=120] - 譜面BASEBPM
+ * @return {number[]} BPMs[<小節番号>] = 小節のBPM
  */
 function getBPMs(
   validLines: string[],
   measure: number,
-  basebpm?: number
+  basebpm: number = 120
 ): number[] {
   const bpmList = validLines
     .filter(line => line.match(/^BPM\d{2}:/))
@@ -55,7 +55,7 @@ function getBPMs(
     )
 
   if (bpmDef.length === 0 || !Number.isFinite(bpmDef[0])) {
-    bpmDef[0] = basebpm || 120
+    bpmDef[0] = basebpm
   }
 
   return [...Array(measure)].reduce((list, _, index) => {
@@ -69,9 +69,9 @@ function getBPMs(
 
 /**
  * 小節あたりの拍数を配列に変換する関数
- * @param {string[]} validLine - sus有効行
- * @param {number} measure - 譜面の小節数
- * @return 配列[小節番号] = BEAT
+ * @param {string[]} validLine - sus有効行配列
+ * @param {number} measure - 譜面小節数
+ * @return {number[]} BEATs[<小節番号>] = 小節の拍数
  */
 function getBEATs(validLines: string[], measure: number): number[] {
   const beatDef = validLines
@@ -97,15 +97,24 @@ function getBEATs(validLines: string[], measure: number): number[] {
   }, [])
 }
 
-const NotesRegexp = /^\d{3}[1-5][0-9a-fA-F][0-9a-zA-Z]?:(\s*[0-9a-zA-Z][0-9a-gA-G])+\s*$/
-
+/**
+ * sus有効行からノーツオブジェクトに変換する関数
+ * @param {string[]} validLine - sus有効行配列
+ * @param {number} tpb - Tick辺りの拍数
+ * @param {number[]} beats - 拍数の配列
+ * @return {ISusMeta[]} BEATs[<小節番号>] = 小節の拍数
+ */
 function getNotes(
   validLines: string[],
   tpb: number,
   beats: number[]
 ): ISusNotes[] {
   return validLines
-    .filter(line => line.match(NotesRegexp))
+    .filter(line =>
+      line.match(
+        /^\d{3}[1-5][0-9a-fA-F][0-9a-zA-Z]?:(\s*[0-9a-zA-Z][0-9a-gA-G])+\s*$/
+      )
+    )
     .map(line => line.split(':', 2))
     .reduce(
       (list, line) => {
@@ -141,9 +150,9 @@ function getNotes(
 
 /**
  * ノーツからロングオブジェクトに変換する関数
- * @param {Object} notes - ノーツ配列
+ * @param {ISusNotes[]} notes - ノーツ配列
  * @param {number} laneType - ロング種別
- * @return ロングオブジェクトの配列
+ * @return {ISusNotes[][]} ロングオブジェクトの配列
  */
 function getLongLane(notes: ISusNotes[], laneType: number): ISusNotes[][] {
   const longs: ISusNotes[][][] = []
@@ -210,11 +219,11 @@ function getLongLane(notes: ISusNotes[], laneType: number): ISusNotes[][] {
 
 /**
  * susを解析する関数
- * @param {String} sus - sus
- * @param {Number} tickPerBeat - デフォルト値: 192
- * @return { measure: <小節数>, BPMs: [<BPMの配列>], BEATs: [拍数の配列], shortNotes: [{ measure: <小節番号>, lane_type: <レーン種別>, lane: <レーン番号>, note_type: <ノーツ種別>, position: <小節内のTick>, width: <ノーツ幅>}], longNotes: [{type: <レーン種別>, notes: [ measure: <小節番号>, lane_type: <レーン種別>, lane: <レーン番号>, defnum: <識別番号>, note_type: ノーツ種別, position: <小節内のTick>, width: <ノーツ幅> ]}]}
+ * @param {String} sus - sus文字列
+ * @param {Number} [tickPerBeat=192] - TickPerBeat
+ * @return {ISusScore} 譜面
  */
-export function analyze(sus: string, tickPerBeat: number = 192): ISusScore {
+export function getScore(sus: string, tickPerBeat: number = 192): ISusScore {
   const validLines = sus
     .split('\n')
     .filter(line => line.slice(0, 1) === '#')

@@ -69,9 +69,9 @@ const RequiredMeta: string[] = [
 /**
  * メタデータのオブジェクトを返す関数
  * @param {String} sus - sus
- * @return メタデータのオブジェクト
+ * @return {ISusMeta} メタデータ
  */
-export function getMeta(sus: string) {
+export function getMeta(sus: string): ISusMeta {
   return getValidMetaLines(sus).reduce(
     (obj: ISusMeta, line: string[]) => {
       switch (line[0]) {
@@ -159,7 +159,7 @@ export function getMeta(sus: string) {
 /**
  * sus譜面が有効かどうかを返す関数
  * @param {String} sus - sus
- * @return 有効かどうかの真偽値
+ * @return {ISusValidity} 結果
  */
 export function validate(sus: string) {
   const meta = getMeta(sus)
@@ -183,6 +183,11 @@ export function validate(sus: string) {
   return validity
 }
 
+/**
+ * sus文字列から有効行を配列で返す関数
+ * @param {String} sus - sus
+ * @return {string[][]} sus有効行の配列
+ */
 function getValidMetaLines(sus: string): string[][] {
   return sus
     .split('\n')

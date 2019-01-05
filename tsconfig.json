@@ -10,7 +10,7 @@
     "noImplicitReturns": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "removeComments": true,
+    "removeComments": false,
     "sourceMap": true,
     "resolveJsonModule": true,
     "declaration": true
