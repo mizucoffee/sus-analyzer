@@ -75,5 +75,5 @@ typings/
 .next
 
 site/
-.jest.config.js
+jest.config.js
 sus-analyzer.png
