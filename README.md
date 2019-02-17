@@ -30,25 +30,20 @@ $ npm i sus-analyzer
 ### JavaScript
 
 ```js
-const SusAnalyzer = require('sus-analyzer')
 const fs = require('fs')
-
-const sus = fs.readFileSync('example.sus', 'utf8')
-const sus_validate = SusAnalyzer.validate(sus)
-const sus_meta = SusAnalyzer.getMeta(sus)
-const sus_data = SusAnalyzer.getScore(sus)
-
-console.log(sus_validate)
-console.log(sus_meta)
-console.log(sus_data)
+const SusAnalyzer = require('sus-analyzer')
 ```
 
 ### TypeScript
 
 ```ts
 import * as fs from 'fs'
-import * as SusAnalyzer from './dist/index.js'
+import * as SusAnalyzer from 'sus-analyzer'
+```
 
+### 共通
+
+```js
 const sus = fs.readFileSync('example.sus', 'utf8')
 const susValidate = SusAnalyzer.validate(sus)
 const susMeta = SusAnalyzer.getMeta(sus)
@@ -64,10 +59,10 @@ console.log(susData)
 サンプルデータを付属しています。  
  譜面データはありませんが、メタ情報を一式揃えてあるのでテスト用にどうぞ。
 
-> {DIFFICULTY}\_{PREFIX}.sus
+> {DIFFICULTY}\_{NUMBER}.sus
 
 というファイル名で構成されています。  
- PREFIX が同じ sus ファイルは同楽曲/同デザイナーになるようにしています。
+ NUMBER が同じ sus ファイルは同楽曲/同デザイナーになるようにしています。
 
 ## License
 
