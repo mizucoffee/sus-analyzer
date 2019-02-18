@@ -174,22 +174,17 @@ function getLongLane(notes: ISusNotes[], laneType: number): ISusNotes[][] {
             .filter(note => note.noteType === 2)
             .forEach(note => {
               const lane = laneType === 2 ? note.lane : 0
-              if (
-                note.channel == null ||
-                longs[lane] == null ||
-                longs[lane][note.channel] == null
-              ) {
-                return
+              if (note.channel && longs[lane] && longs[lane][note.channel]) {
+                longs[lane][note.channel].push(note)
+                list.push(longs[lane][note.channel])
+                delete longs[lane][note.channel]
               }
-              longs[lane][note.channel].push(note)
-              list.push(longs[lane][note.channel])
-              delete longs[lane][note.channel]
             })
           notesPerTick
             .filter(note => note.noteType === 1)
             .forEach(note => {
               const lane = laneType === 2 ? note.lane : 0
-              if (note.channel != null) {
+              if (note.channel) {
                 longs[lane] = longs[lane] || []
                 longs[lane][note.channel] = []
                 longs[lane][note.channel].push(note)
@@ -199,14 +194,9 @@ function getLongLane(notes: ISusNotes[], laneType: number): ISusNotes[][] {
             .filter(note => [3, 4, 5].indexOf(note.noteType) > -1)
             .forEach(note => {
               const lane = laneType === 2 ? note.lane : 0
-              if (
-                note.channel == null ||
-                longs[lane] == null ||
-                longs[lane][note.channel] == null
-              ) {
-                return
+              if (note.channel && longs[lane] && longs[lane][note.channel]) {
+                longs[lane][note.channel].push(note)
               }
-              longs[lane][note.channel].push(note)
             })
         })
         return list
