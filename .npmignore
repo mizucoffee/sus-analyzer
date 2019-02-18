@@ -77,3 +77,4 @@ typings/
 site/
 jest.config.js
 sus-analyzer.png
+.codeclimate.yml
