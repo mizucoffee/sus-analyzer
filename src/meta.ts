@@ -66,6 +66,25 @@ const RequiredMeta: string[] = [
   'PLAYLEVEL'
 ]
 
+const MoS: string[] = [
+  // Meta of String
+  'ARTIST',
+  'BACKGROUND',
+  'DESIGNER',
+  'JACKET',
+  'MOVIE',
+  'SONGID',
+  'TITLE',
+  'WAVE'
+]
+
+const MoN: string[] = [
+  // Meta of Number
+  'BASEBPM',
+  'MOVIEOFFSET',
+  'WAVEOFFSET'
+]
+
 /**
  * メタデータのオブジェクトを返す関数
  * @param {String} sus - sus
@@ -73,81 +92,38 @@ const RequiredMeta: string[] = [
  */
 export function getMeta(sus: string): ISusMeta {
   return getValidMetaLines(sus).reduce(
-    (obj: ISusMeta, line: string[]) => {
-      switch (line[0]) {
-        case 'ARTIST':
-          obj.ARTIST = line[1]
-          break
-        case 'BACKGROUND':
-          obj.BACKGROUND = line[1]
-          break
-        case 'BASEBPM':
-          if (!isNaN(Number(line[1]))) {
-            obj.BASEBPM = Number(line[1])
-          }
-          break
-        case 'DESIGNER':
-          obj.DESIGNER = line[1]
-          break
-        case 'DIFFICULTY':
-          const difLevel = Number(line[1].slice(0, 1))
-          if (isNaN(difLevel)) {
-            break
-          }
-          if (0 > Number(difLevel) || Number(difLevel) > 4) {
-            break
-          }
-          const data: ISusDifficulty = {
-            BACKGROUND: difficultys[difLevel].BACKGROUND,
-            COLOR: difficultys[difLevel].COLOR,
-            LEVEL: Number(difLevel),
-            TEXT: difficultys[difLevel].TEXT
-          }
-          if (data.LEVEL === 4) {
-            data.MARK = line[1].length !== 1 ? `${line[1]}:`.split(':')[1] : ''
-          }
-          obj.DIFFICULTY = data
-          break
-        case 'JACKET':
-          obj.JACKET = line[1]
-          break
-        case 'MOVIE':
-          obj.MOVIE = line[1]
-          break
-        case 'MOVIEOFFSET':
-          if (!isNaN(Number(line[1]))) {
-            obj.MOVIEOFFSET = Number(line[1])
-          }
-          break
-        case 'PLAYLEVEL':
-          const plus = line[1].slice(-1) === '+'
-          if (line[1].slice(-1) === '+') {
-            line[1] = line[1].slice(0, -1)
-          }
-          if (isNaN(Number(line[1]))) {
-            break
-          }
-          const playLevel: ISusLevel = {
-            LEVEL: Number(line[1]),
-            PLUS: plus,
-            TEXT: `${Number(line[1])}${plus ? '+' : ''}`
-          }
-          obj.PLAYLEVEL = playLevel
-          break
-        case 'SONGID':
-          obj.SONGID = line[1]
-          break
-        case 'TITLE':
-          obj.TITLE = line[1]
-          break
-        case 'WAVE':
-          obj.WAVE = line[1]
-          break
-        case 'WAVEOFFSET':
-          if (!isNaN(Number(line[1]))) {
-            obj.WAVEOFFSET = Number(line[1])
-          }
-          break
+    (obj: ISusMeta, line: IValidSusLine) => {
+      if (MoS.indexOf(line.key) > -1) {
+        obj[line.key] = line.value
+      }
+      if (MoN.indexOf(line.key) > -1 && Number(line.value)) {
+        obj[line.key] = Number(line.value)
+      }
+      if (line.key === 'DIFFICULTY') {
+        const difLevel = Number(line.value.slice(0, 1))
+        if (isNaN(difLevel) || 0 > Number(difLevel) || Number(difLevel) > 4) {
+          return obj
+        }
+        obj.DIFFICULTY = {
+          ...difficultys[difLevel],
+          LEVEL: Number(difLevel),
+          MARK:
+            Number(difLevel) === 4
+              ? line.value.length !== 1
+                ? `${line.value}:`.split(':')[1]
+                : ''
+              : undefined
+        }
+      }
+      if (line.key === 'PLAYLEVEL') {
+        if (!Number(line.value) && !Number(line.value.slice(0, -1))) {
+          return obj
+        }
+        obj.PLAYLEVEL = {
+          LEVEL: Number(line.value) || Number(line.value.slice(0, -1)),
+          PLUS: /\+$/.test(line.value),
+          TEXT: line.value
+        }
       }
       return obj
     },
@@ -187,28 +163,45 @@ export function validate(sus: string) {
  * @param {String} sus - sus
  * @return {string[][]} sus有効行の配列
  */
-function getValidMetaLines(sus: string): string[][] {
+function getValidMetaLines(sus: string): IValidSusLine[] {
   return sus
     .split('\n')
     .filter(line => line.slice(0, 1) === '#') // sus有効行
     .map(line => line.slice(1)) // #除去
-    .filter(line => !Number.isFinite(Number(line.slice(0, 3)))) // 上3桁が数字(譜面データ)除外
-    .map(line => [
-      line
-        .slice(0, line.indexOf(' '))
-        .trim()
-        .toUpperCase(),
-      line.slice(line.indexOf(' ') + 1, line.length).trim()
-    ])
-    .filter(line => SupportMeta.indexOf(line[0]) > -1) // 非対応メタデータ除外
+    .filter(line => !line.match(/^\d{3}/)) // 上3桁が数字(譜面データ)除外
+    .reduce(
+      (list, line) => {
+        const key = line
+          .slice(0, line.indexOf(' '))
+          .trim()
+          .toUpperCase()
+        if (isSusMeta(key)) {
+          const a: IValidSusLine = {
+            key,
+            value: line.slice(line.indexOf(' ') + 1, line.length).trim()
+          }
+          list.push(a)
+        }
+        return list
+      },
+      [] as IValidSusLine[]
+    )
     .map(line => {
-      if (
-        line[1].slice(0, 1) === '"' &&
-        line[1].slice(line[1].length - 1) === '"'
-      ) {
-        line[1] = line[1].slice(1, line[1].length - 1)
-      }
+      line.value = line.value.match(/^".*"$/)
+        ? line.value.slice(1, line.value.length - 1)
+        : line.value
       return line
-    }) // 文字列リテラルの
-    .filter(line => line[1])
+    }) // 文字列リテラルのダブルコーテーション外す
+    .filter(line => line.value)
+}
+
+type TSusMeta = keyof ISusMeta
+
+interface IValidSusLine {
+  key: TSusMeta
+  value: string
+}
+
+function isSusMeta(s: any): s is TSusMeta {
+  return SupportMeta.indexOf(s) > -1
 }
