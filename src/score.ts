@@ -30,41 +30,18 @@ export interface ISusScore {
  */
 function getBPMs(
   validLines: string[],
-  measure: number,
+  mea: number,
   basebpm: number = 120
 ): number[] {
-  const bpmList = validLines
-    .filter(line => line.match(/^BPM\d{2}:/))
-    .reduce(
-      (list, line) => {
-        list[Number(line.slice(3, 5))] = Number(line.split(':')[1].trim())
-        return list
-      },
-      [] as number[]
-    )
-
-  const bpmDef = validLines
-    .filter(line => line.match(/^\d{3}08/))
-    .reduce(
-      (list, line) => {
-        list[Number(line.slice(0, 3))] =
-          bpmList[Number(line.split(':')[1].trim())] || basebpm
-        return list
-      },
-      [] as number[]
-    )
-
-  if (bpmDef.length === 0 || !Number.isFinite(bpmDef[0])) {
-    bpmDef[0] = basebpm
-  }
-
-  return [...Array(measure)].reduce((list, _, index) => {
-    let i = index
-    do {
-      list[index] = bpmDef[i--]
-    } while (typeof list[index] === 'undefined')
-    return list
-  }, [])
+  const bpmList = lineToDef(validLines, /^BPM\d{2}:/, 3, 5)
+  const bpmDef = lineToDef(validLines, /^\d{3}08:/, 0, 3).map(def => {
+    if (!bpmList[def]) {
+      return undefined
+    }
+    return bpmList[def]
+  })
+  bpmDef[0] = !Number(bpmDef[0]) ? basebpm : bpmDef[0]
+  return defToArray(bpmDef, mea)
 }
 
 /**
@@ -74,24 +51,33 @@ function getBPMs(
  * @return {number[]} BEATs[<小節番号>] = 小節の拍数
  */
 function getBEATs(validLines: string[], measure: number): number[] {
-  const beatDef = validLines
-    .filter(line => line.match(/^\d{3}02:/))
+  const beatDef = lineToDef(validLines, /^\d{3}02:/, 0, 3)
+  beatDef[0] = !Number.isFinite(beatDef[0]) ? 4 : beatDef[0]
+  return defToArray(beatDef, measure)
+}
+
+function lineToDef(
+  validLines: string[],
+  pattern: RegExp,
+  s1: number,
+  s2: number
+) {
+  return validLines
+    .filter(line => line.match(pattern))
     .reduce(
       (list, line) => {
-        list[Number(line.slice(0, 3))] = Number(line.split(':')[1].trim())
+        list[Number(line.slice(s1, s2))] = Number(line.split(':')[1].trim())
         return list
       },
       [] as number[]
     )
+}
 
-  if (beatDef.length === 0 || !Number.isFinite(beatDef[0])) {
-    beatDef[0] = 4
-  }
-
+function defToArray(def: Array<number | undefined>, measure: number) {
   return [...Array(measure)].reduce((list, _, index) => {
     let i = index
     do {
-      list[index] = beatDef[i--]
+      list[index] = def[i--]
     } while (typeof list[index] === 'undefined')
     return list
   }, [])
