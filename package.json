@@ -1,9 +1,9 @@
 {
   "name": "sus-analyzer",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/mizucoffee/sus-analyze.git",
+  "repository": "https://github.com/mizucoffee/sus-analyzer.git",
   "author": "Ritsuki Goto <develop@mizucoffee.net>",
   "license": "MIT",
   "description": "SeaUrchinScore Analyzer",
