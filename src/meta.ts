@@ -33,6 +33,13 @@ export interface ISusValidity {
   MISSING_META: string[]
 }
 
+export interface IValidSusLine {
+  key: TSusMeta
+  value: string
+}
+
+type TSusMeta = keyof ISusMeta
+
 const difficultys = [
   { TEXT: 'BASIC', COLOR: '#19aa19', BACKGROUND: '#e8f6e8' },
   { TEXT: 'ADVANCED', COLOR: '#f55000', BACKGROUND: '#feede5' },
@@ -161,7 +168,7 @@ export function validate(sus: string) {
 /**
  * sus文字列から有効行を配列で返す関数
  * @param {String} sus - sus
- * @return {string[][]} sus有効行の配列
+ * @return {IValidSusLine[]} sus有効行の配列
  */
 function getValidMetaLines(sus: string): IValidSusLine[] {
   return sus
@@ -193,13 +200,6 @@ function getValidMetaLines(sus: string): IValidSusLine[] {
       return line
     }) // 文字列リテラルのダブルコーテーション外す
     .filter(line => line.value)
-}
-
-type TSusMeta = keyof ISusMeta
-
-interface IValidSusLine {
-  key: TSusMeta
-  value: string
 }
 
 function isSusMeta(s: any): s is TSusMeta {
